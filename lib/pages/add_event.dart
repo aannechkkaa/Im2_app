@@ -359,7 +359,7 @@ class _add_eventState extends State<add_event> {
                                   context: context,
                                   initialDate: DateTime.now(),
                                   firstDate:DateTime.now(),
-                                  lastDate: DateTime(2024),
+                                  lastDate: DateTime(2025),
                                 ).then((value) {
                                   print("Selected date: $value");
                                   setState(() {
