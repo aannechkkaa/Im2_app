@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gifimage/flutter_gifimage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im2/pages/first_page.dart';
 import 'dart:html';
