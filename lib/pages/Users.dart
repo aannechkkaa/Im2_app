@@ -11,30 +11,15 @@ int user_id = 0;
 
 // Создаем класс, который будет содержать данные пользователя и наследоваться от ChangeNotifier.
 class User with ChangeNotifier {
-  String _username = "";
-  String _password = "";
-  String _profile_description = "";
-  String? _avatarUrl = "";
-  int _age = 0;
-  int _id = 0;
-  String _email = "";
-  bool _is_admin = false;
+  String username = "";
+  String password = "";
+  String profile_description = "";
+  String? avatarUrl = "";
+  int age = 0;
+  int id = 0;
+  String email = "";
+  bool is_admin = false;
 
-  String get username => _username;
-
-  String get profile_description => _profile_description;
-
-  String get password => _password;
-
-  String get email => _email;
-
-  String? get avatarUrl => _avatarUrl;
-
-  int get age => _age;
-
-  int get id => _id;
-
-  bool get is_admin => _is_admin;
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
@@ -48,44 +33,36 @@ class User with ChangeNotifier {
     String mail,
     bool is_admin,
   ) async {
-    _username = username;
-    _password = password;
-    _avatarUrl = avatarUrl;
-    _age = age;
-    _email = mail;
-    _id = id;
-    _profile_description = description;
-    _is_admin = is_admin;
     notifyListeners();
-    if (_username.isEmpty) {
+    if (username.isEmpty) {
       print('Error: Username is required');
       return;
     }
 
-    if (_password.isEmpty) {
+    if (password.isEmpty) {
       print('Error: Password is required');
       return;
     }
 
-    if (_email.isEmpty) {
+    if (email.isEmpty) {
       print('Error: Email is required');
       return;
     }
 
     final userData = {
-      'username': _username,
-      'password': _password,
-      'avatarUrl': _avatarUrl ?? '', // Use empty string if null
-      'age': _age,
-      'email': _email,
-      'profileDescription': _profile_description,
-      'isAdmin': _is_admin,
+      'username': username,
+      'password': password,
+      'avatarUrl': avatarUrl ?? '', // Use empty string if null
+      'age': age,
+      'email': email,
+      'profileDescription': profile_description,
+      'isAdmin': is_admin,
     };
 
     // Add a new document with a generated ID
     final newUserRef = await usersCollection.add(userData);
-    _id = int.parse(newUserRef.id); // Parse the document ID as an integer
-    debugPrint('User registered on Firestore with ID: $_id');
+    id = int.parse(newUserRef.id); // Parse the document ID as an integer
+    debugPrint('User registered on Firestore with ID: $id');
   }
 
   Future<void> login(String email, String password) async {
@@ -101,15 +78,17 @@ class User with ChangeNotifier {
         var userData = userDoc.data() as Map<String, dynamic>?;
 
         if (userData != null) {
-          _username = userData['username'] as String? ?? '';
-          _avatarUrl = userData['avatarUrl'] as String;
-          _age = userData['age'] as int? ?? 0;
-          _email = userData['email'] as String? ?? '';
-          _id = userData['id'] as int? ?? 0;
-          _profile_description =
+          current_user.username = userData['username'] as String? ?? '';
+          current_user.username = userData['username'] as String? ?? '';
+          current_user.avatarUrl = userData['avatarUrl'] as String;
+          current_user.age = userData['age'] as int? ?? 0;
+          current_user.email = userData['email'] as String? ?? '';
+          current_user.id = userData['id'] as int? ?? 0;
+          current_user.profile_description =
               userData['profileDescription'] as String? ?? '';
-          _is_admin = userData['isAdmin'] as bool? ?? false;
+          current_user.is_admin = userData['isAdmin'] as bool? ?? false;
           notifyListeners();
+          print(current_user.avatarUrl);
 
           print('User logged in successfully');
         } else {
@@ -127,32 +106,32 @@ class User with ChangeNotifier {
   }
 
   void updateUsername(String newUsername) {
-    _username = newUsername;
+    username = newUsername;
     notifyListeners();
   }
 
   void updatePassword(String newPassword) {
-    _password = newPassword;
+    password = newPassword;
     notifyListeners();
   }
 
   void updateAvatarUrl(String? newAvatarUrl) {
-    _avatarUrl = newAvatarUrl;
+    avatarUrl = newAvatarUrl;
     notifyListeners();
   }
 
   void updateAge(int newAge) {
-    _age = newAge;
+    age = newAge;
     notifyListeners();
   }
 
   void updateEmail(String newEmail) {
-    _email = newEmail;
+    email = newEmail;
     notifyListeners();
   }
 
   void updateProfileDescription(String newProfileDescription) {
-    _profile_description = newProfileDescription;
+    profile_description = newProfileDescription;
     notifyListeners();
   }
 }

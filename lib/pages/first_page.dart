@@ -180,29 +180,20 @@ class Reg_route_state extends State<Reg_route>{
           ),
           Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(13.0, 0.0, 0.0, 0.0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(13.0, 0.0, 0.0, 0.0),
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   if (findUserByLoginAndPassword(
                           Users, user_email, user_password) ==
                       null) {
-                    User().login(user_email, user_password);
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (BuildContext context) {
-                    //       return AlertDialog(
-                    //         title: Text(
-                    //           "Такого пользователя не существует.",
-                    //           style: TextStyle(
-                    //             fontSize: 18,
-                    //             fontFamily: 'Oswald',
-                    //             color: Colors.black,
-                    //           ),
-                    //         ),
-                    //       );
-                    //     });
+                    await User().login(user_email, user_password);
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child: Home()));
                   } else {
                     current_user = findUserByLoginAndPassword(
                         Users, user_email, user_password)!;

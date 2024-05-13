@@ -1,9 +1,10 @@
-
 import 'dart:js_util';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:im2/pages/Comment.dart';
 import 'package:im2/pages/Users.dart';
+import 'package:im2/pages/add_event.dart';
 
 class Event with ChangeNotifier {
   String _category = "";
@@ -24,18 +25,63 @@ class Event with ChangeNotifier {
   String? _picURL2 = "";
 
   String? get picURL1 => _picURL1;
+
   String? get picURL2 => _picURL2;
+
   String get category => _category;
+
   String get name => _name;
+
   String get shortDescription => _shortDescription;
+
   String get longDescription => _longDescription;
+
   String get place => _place;
+
   String get chatLink => _chatLink;
+
   DateTime get Date => _Date;
+
   TimeOfDay get Time => _Time;
+
   int get index => _index;
+
   List<Comment_class> get comments => _comments;
+
   List<User> get participants => _participants;
+
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('event');
+
+  Future<void> addEvent(
+    _name,
+    _category,
+    _shortDescription,
+    _longDescription,
+    _place,
+    _Date,
+    _Time,
+    _chatLink,
+    _picURL1,
+    _picURL2,
+  ) async {
+    final userData = {
+      'name': _name,
+      'category': _category,
+      'shortDescription': _shortDescription, // Use empty string if null
+      'longDescription': _longDescription,
+      'place': _place,
+      'date': _Date.toString(),
+      'time': _Time.toString(),
+      'chatLink': _chatLink,
+      'picURL1': _picURL1,
+      'picURL2': _picURL2,
+    };
+
+    // Add a new document with a generated ID
+    final newUserRef = await usersCollection.add(userData);
+    var id = int.parse(newUserRef.id); // Parse the document ID as an integer
+  }
 
   void setEvent_autor(User autor) {
     _event_autor = autor;
@@ -77,7 +123,6 @@ class Event with ChangeNotifier {
     notifyListeners();
   }
 
-
   void setShortDescription(String shortDescription) {
     _shortDescription = shortDescription;
     notifyListeners();
@@ -108,6 +153,3 @@ class Event with ChangeNotifier {
     notifyListeners();
   }
 }
-
-
-

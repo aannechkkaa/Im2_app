@@ -185,7 +185,7 @@ class _Event_pageState extends State<Event_page> {
                                                 Row(
                                                   mainAxisSize: MainAxisSize.max,
                                                   children: [
-                                                    Icon(
+                                                    const Icon(
                                                       //Icons.border_color_outlined
                                                         Icons.place_outlined,
                                                         color: Color.fromARGB(255, 74, 68, 134),),
@@ -194,7 +194,7 @@ class _Event_pageState extends State<Event_page> {
                                                       maxLines: 2,
 
                                                       style:
-                                                      TextStyle(
+                                                      const TextStyle(
                                                         fontSize: 17,
                                                         fontFamily: 'Oswald',
                                                         color: Color.fromARGB(255, 74, 68, 134),
