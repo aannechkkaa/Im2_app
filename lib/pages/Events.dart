@@ -6,6 +6,8 @@ import 'package:im2/pages/Comment.dart';
 import 'package:im2/pages/Users.dart';
 import 'package:im2/pages/add_event.dart';
 
+import '../models/event_model.dart';
+
 class Event with ChangeNotifier {
   String _category = "";
   String _name = "";
@@ -53,6 +55,12 @@ class Event with ChangeNotifier {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('event');
 
+  Future<dynamic> getEvent() async {
+    final newUserRef = await usersCollection.get();
+    List<dynamic> result = newUserRef.docs.map((doc) => doc.data()).toList();
+    return result;
+  }
+
   Future<void> addEvent(
     _name,
     _category,
@@ -64,6 +72,7 @@ class Event with ChangeNotifier {
     _chatLink,
     _picURL1,
     _picURL2,
+    User event_autor,
   ) async {
     final userData = {
       'name': _name,
@@ -76,11 +85,27 @@ class Event with ChangeNotifier {
       'chatLink': _chatLink,
       'picURL1': _picURL1,
       'picURL2': _picURL2,
+      'comments': [],
+      'event_autor': {
+        "username": event_autor.username,
+        "avatarUrl": event_autor.avatarUrl,
+        "email": event_autor.email,
+        "id": event_autor.id,
+        "age": event_autor.age,
+        "is_admin": event_autor.is_admin,
+        "profile_description": event_autor.profile_description,
+      },
     };
 
     // Add a new document with a generated ID
     final newUserRef = await usersCollection.add(userData);
+    await usersCollection.doc(newUserRef.id).update({"id": newUserRef.id});
     var id = int.parse(newUserRef.id); // Parse the document ID as an integer
+  }
+
+  addComments(ids, comments) async {
+    await usersCollection.doc(ids).update({"comments": comments});
+    print("shud");
   }
 
   void setEvent_autor(User autor) {

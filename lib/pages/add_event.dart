@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:html';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:im2/pages/Event.dart';
 import 'package:im2/pages/account.dart';
@@ -10,6 +11,7 @@ import 'package:im2/pages/home.dart';
 import 'package:im2/pages/Events.dart';
 import 'package:im2/pages/Users.dart';
 import 'package:im2/pages/MyWidgets/add_e_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:email_validator/email_validator.dart';
@@ -85,18 +87,15 @@ class _add_eventState extends State<add_event> {
   String? pic2Url;
 
   Future pickImage() async {
-    final input = html.FileUploadInputElement();
-    input.accept = 'image/*';
-    input.click();
-    await input.onChange.first;
-    final file = input.files!.first;
-    final reader = html.FileReader();
-    reader.readAsDataUrl(file);
-    await reader.onLoad.first;
-    final encodedImage = reader.result as String;
-    final bytes = base64.decode(encodedImage.split(',').last);
-    final blob = html.Blob([bytes], 'image/jpeg');
-    final url = html.Url.createObjectUrl(blob);
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    Reference reference = _storage.ref().child('images/${image!.name}');
+
+    //Upload the file to firebase
+    TaskSnapshot uploadTask =
+        await reference.putData(await image.readAsBytes());
+    var url = await uploadTask.ref.getDownloadURL();
     if (pic1Url == null) {
       setState(() => this.pic1Url = url);
     } else {
@@ -129,9 +128,7 @@ class _add_eventState extends State<add_event> {
             centerTitle: false,
           ),
           body: Stack(children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            ListView(
               children: [
                 const SizedBox(
                   height: 30,
@@ -153,19 +150,19 @@ class _add_eventState extends State<add_event> {
                     children: [
                       Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
                             //width: 200,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 163, 161, 225),
+                              color: const Color.fromARGB(255, 163, 161, 225),
                               borderRadius: BorderRadius.circular(5),
                               //color: Colors.white,
                             ),
                             child: DropdownButton<String>(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down,
                                 color: Color.fromARGB(255, 50, 50, 50),
                               ),
@@ -343,7 +340,7 @@ class _add_eventState extends State<add_event> {
                           maxLines: 1,
                           decoration:
                               //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
-                              InputDecoration(
+                              const InputDecoration(
                             labelText: 'Адрес или название места',
                             labelStyle: TextStyle(
                                 fontSize: 17,
@@ -359,7 +356,7 @@ class _add_eventState extends State<add_event> {
                       ),
                       Row(
                         children: [
-                          Column(
+                          const Column(
                             children: [
                               SizedBox(
                                 width: 7,
@@ -382,9 +379,19 @@ class _add_eventState extends State<add_event> {
                                     });
                                   });
                                 },
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(200, 255, 255, 255),
+                                  ),
+                                ),
                                 child: Row(
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Дата     ',
                                       style: TextStyle(
                                         fontSize: 18,
@@ -396,7 +403,7 @@ class _add_eventState extends State<add_event> {
                                       e_Datetime != null
                                           ? "${e_Datetime.day}/${e_Datetime.month}/${e_Datetime.year}"
                                           : "",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 17,
                                         color: Color.fromARGB(200, 50, 50, 50),
                                         fontFamily: 'Oswald',
@@ -404,25 +411,15 @@ class _add_eventState extends State<add_event> {
                                     ),
                                   ],
                                 ),
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  backgroundColor: MaterialStateProperty.all(
-                                    Color.fromARGB(200, 255, 255, 255),
-                                  ),
-                                ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 60,
                           ),
                           Row(
                             children: [
-                              Column(
+                              const Column(
                                 children: [
                                   SizedBox(
                                     width: 7,
@@ -434,15 +431,26 @@ class _add_eventState extends State<add_event> {
                                   TextButton(
                                     onPressed: () {
                                       showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now())
-                                        ..then((value) {
-                                          //print("Selected date: $value");
-                                          setState(() {
-                                            e_dateTime = value!;
-                                          });
+                                              context: context,
+                                              initialTime: TimeOfDay.now())
+                                          .then((value) {
+                                        //print("Selected date: $value");
+                                        setState(() {
+                                          e_dateTime = value!;
                                         });
+                                      });
                                     },
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      )),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Color.fromARGB(
+                                                  200, 255, 255, 255)),
+                                      //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                                    ),
                                     child: Row(
                                       children: [
                                         Text('Время начала' + "      ",
@@ -460,17 +468,6 @@ class _add_eventState extends State<add_event> {
                                                     200, 50, 50, 50),
                                                 fontFamily: 'Oswald')),
                                       ],
-                                    ),
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      )),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Color.fromARGB(
-                                                  200, 255, 255, 255)),
-                                      //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
                                     ),
                                   ),
                                 ],
@@ -505,11 +502,6 @@ class _add_eventState extends State<add_event> {
                               onPressed: () {
                                 openUrlInBrowser(Uri.parse(create_bot_link));
                               },
-                              child: Text("Создать чат участников",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Color.fromARGB(255, 50, 50, 50),
-                                      fontFamily: 'Oswald')),
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
@@ -520,13 +512,18 @@ class _add_eventState extends State<add_event> {
                                 ),
                                 //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
                               ),
+                              child: const Text("Создать чат участников",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Color.fromARGB(255, 50, 50, 50),
+                                      fontFamily: 'Oswald')),
                             ),
                             IconButton(
                               onPressed: () {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
+                                      return const AlertDialog(
                                           title: Center(
                                             child: Text(
                                               "Зачем это нужно?",
@@ -761,83 +758,81 @@ class _add_eventState extends State<add_event> {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.white,
-            onPressed: () {
-              setState(() async {
-                //Event_index = events_add_page.length ;
-                if (((s_description != "") &&
-                        (s_description.trim().isNotEmpty)) &&
-                    ((l_description != "") &&
-                        (l_description.trim().isNotEmpty)) &&
-                    ((e_place != "") && (e_place.trim().isNotEmpty)) &&
-                    ((e_name != "") && (e_name.trim().isNotEmpty)) &&
-                    ((event_type != "") && (event_type.trim().isNotEmpty)) &&
-                    ((pic1Url != null) || (pic2Url != null))) {
-                  events_add_page.add(Event());
-                  //sortByNearestDate(events_add_page);
-                  // events_add_page.last.setEvent_autor(Users.last);
-                  events_add_page.last.setName(e_name);
-                  events_add_page.last.setShortDescription(s_description);
-                  events_add_page.last.setLongDescription(l_description);
-                  events_add_page.last.setPlace(e_place);
-                  events_add_page.last.setCategory(event_type);
-                  events_add_page.last.setTime(e_dateTime);
-                  events_add_page.last.setDate(e_Datetime);
-                  events_add_page.last.setChatLink(event_chat_url);
-                  events_add_page.last.setIndex(e_index);
-                  events_add_page.last.setPic1(pic1Url);
-                  events_add_page.last.setPic2(pic2Url);
-                  print(events_add_page.length);
-                  e_index++;
+            onPressed: () async {
+              //Event_index = events_add_page.length ;
+              if (((s_description != "") &&
+                      (s_description.trim().isNotEmpty)) &&
+                  ((l_description != "") &&
+                      (l_description.trim().isNotEmpty)) &&
+                  ((e_place != "") && (e_place.trim().isNotEmpty)) &&
+                  ((e_name != "") && (e_name.trim().isNotEmpty)) &&
+                  ((event_type != "") && (event_type.trim().isNotEmpty)) &&
+                  ((pic1Url != null) || (pic2Url != null))) {
+                events_add_page.add(Event());
+                //sortByNearestDate(events_add_page);
+                // events_add_page.last.setEvent_autor(Users.last);
+                events_add_page.last.setName(e_name);
+                events_add_page.last.setShortDescription(s_description);
+                events_add_page.last.setLongDescription(l_description);
+                events_add_page.last.setPlace(e_place);
+                events_add_page.last.setCategory(event_type);
+                events_add_page.last.setTime(e_dateTime);
+                events_add_page.last.setDate(e_Datetime);
+                events_add_page.last.setChatLink(event_chat_url);
+                events_add_page.last.setIndex(e_index);
+                events_add_page.last.setPic1(pic1Url);
+                events_add_page.last.setPic2(pic2Url);
+                print(events_add_page.length);
+                e_index++;
 
-                  // e_name = "";
-                  // e_place = "";
-                  // s_description = "";
-                  // l_description = "";
-                  // //event_type = "";
-                  // del_1 = false;
-                  // del_2v = false;
-
-                  u_r_member = isUserExist(
-                      events_add_page[Event_index].participants,
-                      current_user.id);
-                  Event_index = e_index - 1;
-                  await Event().addEvent(
-                      e_name,
-                      event_type,
-                      s_description,
-                      l_description,
-                      e_place,
-                      e_Datetime,
-                      e_dateTime,
-                      event_chat_url,
-                      pic1Url,
-                      pic2Url);
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.fade,
-                          // duration: Duration.millisecondsPerSecond(),
-                          alignment: Alignment.center,
-                          child: Event_page(key: Key(e_index.toString()))));
-                } else {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Center(
-                            child: Text(
-                              "Вы должны заполнить все поля и добавить как минимум одну картинку!",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Oswald',
-                                color: Colors.black,
-                              ),
+                // e_name = "";
+                // e_place = "";
+                // s_description = "";
+                // l_description = "";
+                // //event_type = "";
+                // del_1 = false;
+                // del_2v = false;
+                print(current_user.username);
+                u_r_member = isUserExist(
+                    events_add_page[Event_index].participants, current_user.id);
+                Event_index = e_index - 1;
+                setState(() {});
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        title: Center(
+                          child: Text(
+                            "Вы должны заполнить все поля и добавить как минимум одну картинку!",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Oswald',
+                              color: Colors.black,
                             ),
                           ),
-                        );
-                      });
-                }
-              });
+                        ),
+                      );
+                    });
+              }
+
+              await Event().addEvent(
+                  e_name,
+                  event_type,
+                  s_description,
+                  l_description,
+                  e_place,
+                  e_Datetime,
+                  "${e_dateTime.hour}:${e_dateTime.minute}",
+                  event_chat_url,
+                  pic1Url,
+                  pic2Url,
+                  current_user);
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.fade,
+                      child: const Event_page()));
             },
             child: SvgPicture.asset(
               'assets/add_icon_white.svg',
@@ -868,12 +863,12 @@ class _add_eventState extends State<add_event> {
                                             type: PageTransitionType.fade,
                                             child: Home()));
                                   }),
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.map_outlined,
                                     color: Color.fromARGB(255, 50, 50, 50),
                                     size: 25,
                                   )),
-                              Text(
+                              const Text(
                                 'Обзор',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -915,7 +910,7 @@ class _add_eventState extends State<add_event> {
                                   ),
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Профиль',
                                 style: TextStyle(
                                     fontSize: 16,

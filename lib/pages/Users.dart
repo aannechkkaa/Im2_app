@@ -16,7 +16,7 @@ class User with ChangeNotifier {
   String profile_description = "";
   String? avatarUrl = "";
   int age = 0;
-  int id = 0;
+  dynamic id = 0;
   String email = "";
   bool is_admin = false;
 
@@ -61,6 +61,7 @@ class User with ChangeNotifier {
 
     // Add a new document with a generated ID
     final newUserRef = await usersCollection.add(userData);
+    await usersCollection.doc(newUserRef.id).update({"id": newUserRef.id});
     id = int.parse(newUserRef.id); // Parse the document ID as an integer
     debugPrint('User registered on Firestore with ID: $id');
   }
@@ -81,9 +82,10 @@ class User with ChangeNotifier {
           current_user.username = userData['username'] as String? ?? '';
           current_user.username = userData['username'] as String? ?? '';
           current_user.avatarUrl = userData['avatarUrl'] as String;
+          current_user.password = userData['password'] as String;
           current_user.age = userData['age'] as int? ?? 0;
           current_user.email = userData['email'] as String? ?? '';
-          current_user.id = userData['id'] as int? ?? 0;
+          current_user.id = userData['id'] as String? ?? 0;
           current_user.profile_description =
               userData['profileDescription'] as String? ?? '';
           current_user.is_admin = userData['isAdmin'] as bool? ?? false;
@@ -103,6 +105,15 @@ class User with ChangeNotifier {
       print('Error logging in: $e');
       // Handle error appropriately, maybe throw an exception or show a snackbar
     }
+  }
+
+  Future<void> updateData(ids, username, email, password, avatarUrl) async {
+    await usersCollection.doc(ids).update({
+      'username': username,
+      'password': password,
+      'avatarUrl': avatarUrl ?? '',
+      'email': email,
+    });
   }
 
   void updateUsername(String newUsername) {
