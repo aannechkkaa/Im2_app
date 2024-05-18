@@ -91,10 +91,12 @@ class Home_route_state extends State<Home_route> {
 //basename() function will give you the filename
 //     final pickedImage = PickedImage(file: image!, url: encodedImage);
     //Create a reference to the location you want to upload to in firebase
-    Reference reference = FirebaseStorage.instance.ref().child('profileImage/${image!.name}');
+    Reference reference =
+        FirebaseStorage.instance.ref().child('profileImage/${image!.name}');
 
     //Upload the file to firebase
-    TaskSnapshot uploadTask = await reference.putData(await image!.readAsBytes());
+    TaskSnapshot uploadTask =
+        await reference.putData(await image!.readAsBytes());
     var url = await uploadTask.ref.getDownloadURL();
     print(url);
     setState(() {
@@ -426,7 +428,7 @@ class Home_route_state extends State<Home_route> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
+                              return const AlertDialog(
                                 title: Text(
                                   "К сожалению, вы не достигли возраста 16-ти лет и не можете использовать приложение.",
                                   style: TextStyle(
@@ -455,55 +457,16 @@ class Home_route_state extends State<Home_route> {
                               );
                             });
                       } else {
-                        User user = User();
-                        Users.add(User());
-                        if ((user_email == "admin@mail.ru") &&
-                            (user_password == "admin_password")) {
-                          current_user.register(
-                              user_name_reg,
-                              user_password,
-                              avatarUrl,
-                              (DateTime.now().difference(birth_date).inDays /
-                                      365)
-                                  .floor(),
-                              Users.length,
-                              user_description,
-                              user_email,
-                              true);
-                        } else {
-                          Users.last.register(
-                              user_name_reg,
-                              user_password,
-                              avatarUrl,
-                              (DateTime.now().difference(birth_date).inDays /
-                                      365)
-                                  .floor(),
-                              Users.length,
-                              user_description,
-                              user_email,
-                              false);
-                          current_user = Users.last;
-                        }
-
-                        //
-                        //   void saveDataUriToFile(String dataUri, String filePath) {
-                        //     // Remove the data URI prefix
-                        //     String base64Content = dataUri.split(',').last;
-                        //
-                        //     // Decode the base64 content to bytes
-                        //     Uint8List bytes = base64Decode(base64Content);
-                        //
-                        //     // Save the bytes to a file
-                        //     File(filePath).writeAsBytesSync(bytes);
-                        //   }
-                        //
-                        //
-                        //
-                        //
-                        //
-                        // final userModel = await ApiService.register(user_email, (DateTime.now().difference(birth_date).inDays / 365).floor(), user_password, user_name_reg, avatarUrl);
-                        //
-                        //   print('Зарегистрированный пользователь: ${userModel.name}, ${userModel.email}');
+                        await User().register(
+                            user_name_reg,
+                            user_password,
+                            avatarUrl,
+                            (DateTime.now().difference(birth_date).inDays / 365)
+                                .floor(),
+                            Users.length,
+                            user_description,
+                            user_email,
+                            false);
                         Navigator.push(
                             context,
                             PageTransition(
@@ -511,14 +474,6 @@ class Home_route_state extends State<Home_route> {
                                 child: Home()));
                       }
                     },
-                    child: Text(
-                      'Зарегестрироваться',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color.fromARGB(255, 50, 50, 50),
-                        fontFamily: 'Oswald',
-                      ),
-                    ),
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -528,8 +483,16 @@ class Home_route_state extends State<Home_route> {
                         ),
                         minimumSize: MaterialStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 20, 40))),
+                    child: const Text(
+                      'Зарегестрироваться',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromARGB(255, 50, 50, 50),
+                        fontFamily: 'Oswald',
+                      ),
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   )
                 ],

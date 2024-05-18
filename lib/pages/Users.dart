@@ -44,7 +44,7 @@ class User with ChangeNotifier {
       return;
     }
 
-    if (email.isEmpty) {
+    if (mail.isEmpty) {
       print('Error: Email is required');
       return;
     }
@@ -54,16 +54,24 @@ class User with ChangeNotifier {
       'password': password,
       'avatarUrl': avatarUrl ?? '', // Use empty string if null
       'age': age,
-      'email': email,
-      'profileDescription': profile_description,
+      'email': mail,
+      'profileDescription': description,
       'isAdmin': is_admin,
     };
 
     // Add a new document with a generated ID
     final newUserRef = await usersCollection.add(userData);
     await usersCollection.doc(newUserRef.id).update({"id": newUserRef.id});
-    id = int.parse(newUserRef.id); // Parse the document ID as an integer
-    debugPrint('User registered on Firestore with ID: $id');
+    current_user.username = userData['username'] as String? ?? '';
+    current_user.username = userData['username'] as String? ?? '';
+    current_user.avatarUrl = userData['avatarUrl'] as String;
+    current_user.password = userData['password'] as String;
+    current_user.age = userData['age'] as int? ?? 0;
+    current_user.email = userData['email'] as String? ?? '';
+    current_user.id = newUserRef.id;
+    current_user.profile_description =
+        userData['profileDescription'] as String? ?? '';
+    current_user.is_admin = userData['isAdmin'] as bool? ?? false;
   }
 
   Future<void> login(String email, String password) async {
