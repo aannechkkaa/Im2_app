@@ -520,7 +520,7 @@ class _Event_pageState extends State<Event_page> {
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 context),
-                                                        child: Text(
+                                                        child: const Text(
                                                             "Нужно подумать!"),
                                                       ),
                                                     ],
@@ -557,7 +557,7 @@ class _Event_pageState extends State<Event_page> {
                                       //foregroundColor: Colors.pink,
                                     ),
                                     child: Text(
-                                      "u_r_member", //TODO
+                                      "Присоединиться!", //TODO
                                       style: TextStyle(
                                         fontSize: 17,
                                         //fontFamily: 'Oswald',

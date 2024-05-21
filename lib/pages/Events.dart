@@ -100,7 +100,6 @@ class Event with ChangeNotifier {
     // Add a new document with a generated ID
     final newUserRef = await usersCollection.add(userData);
     await usersCollection.doc(newUserRef.id).update({"id": newUserRef.id});
-    var id = int.parse(newUserRef.id); // Parse the document ID as an integer
   }
 
   addComments(ids, comments) async {

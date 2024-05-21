@@ -792,10 +792,10 @@ class _add_eventState extends State<add_event> {
                 // //event_type = "";
                 // del_1 = false;
                 // del_2v = false;
-                print(current_user.username);
-                u_r_member = isUserExist(
-                    events_add_page[Event_index].participants, current_user.id);
-                Event_index = e_index - 1;
+                // print(current_user.username);
+                // u_r_member = isUserExist(
+                //     events_add_page[Event_index].participants, current_user.id);
+                // Event_index = e_index - 1;
                 setState(() {});
               } else {
                 showDialog(
