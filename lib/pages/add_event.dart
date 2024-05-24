@@ -832,7 +832,7 @@ class _add_eventState extends State<add_event> {
                   context,
                   PageTransition(
                       type: PageTransitionType.fade,
-                      child: const Event_page()));
+                      child: const Home()));
             },
             child: SvgPicture.asset(
               'assets/add_icon_white.svg',

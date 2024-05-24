@@ -122,15 +122,16 @@ class _Event_pageState extends State<Event_page> {
                             Column(
                               children: [
                                 //SizedBox(width: 20,),
-
-                                ClipOval(
-                                  child: Image.network(
-                                    widget.event["event_autor"]["avatarUrl"],
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
+                                if (widget.event["event_autor"]["avatarUrl"] !=
+                                    null)
+                                  ClipOval(
+                                    child: Image.network(
+                                      widget.event["event_autor"]["avatarUrl"],
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
                                 const SizedBox(
                                   width: 10,
                                 ),
