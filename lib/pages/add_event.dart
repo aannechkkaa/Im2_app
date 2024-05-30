@@ -601,7 +601,7 @@ class _add_eventState extends State<add_event> {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return AlertDialog(
+                                        return const AlertDialog(
                                           title: Center(
                                             child: Text(
                                               "Вы можете добавить только 2 фотографии",
@@ -616,11 +616,6 @@ class _add_eventState extends State<add_event> {
                                       });
                                 }
                               },
-                              child: Text("Добавить фото",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Color.fromARGB(255, 50, 50, 50),
-                                      fontFamily: 'Oswald')),
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
@@ -631,9 +626,14 @@ class _add_eventState extends State<add_event> {
                                 ),
                                 //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
                               ),
+                              child: const Text("Добавить фото",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Color.fromARGB(255, 50, 50, 50),
+                                      fontFamily: 'Oswald')),
                             ),
                           ]),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       Column(

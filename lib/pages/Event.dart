@@ -17,16 +17,15 @@ class Event_members {
   int age = 45;
 }
 
-String isUserExist(List<User> userList, int userId) {
-  if (userList.any((user) => user.id == userId)) {
+String isUserExist(dynamic userList, dynamic userId) {
+  if (userList.any((user) => user["id"] == userId)) {
     return "Вы участник!";
   } else {
     return "Присоединиться!";
   }
 }
 
-String u_r_member =
-    isUserExist(events_add_page[Event_index].participants, current_user.id);
+String u_r_member = "Присоединиться";
 String comment_txt = "";
 //List<Comment> Comment_list = [];
 List<Event_members> Members_list = [];
@@ -46,6 +45,14 @@ class Event_page extends StatefulWidget {
 
 class _Event_pageState extends State<Event_page> {
   // void Current_event(String name,String short_description,String autor_name, String long_description,String place,String date,String time,){
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    u_r_member = isUserExist(widget.event["participants"], current_user.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +117,7 @@ class _Event_pageState extends State<Event_page> {
                           textDirection: TextDirection.ltr,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 25,
                             ),
                             Column(
@@ -357,24 +364,21 @@ class _Event_pageState extends State<Event_page> {
                                                       ),
                                                       content: SizedBox(
                                                         width: 100,
-                                                        height: events_add_page[
-                                                                    Event_index]
-                                                                .participants
+                                                        height: widget
+                                                                .event[
+                                                                    "participants"]
                                                                 .length *
                                                             40,
                                                         child: ListView.builder(
-                                                            itemCount:
-                                                                events_add_page[
-                                                                        Event_index]
-                                                                    .participants
-                                                                    .length,
+                                                            itemCount: widget
+                                                                .event[
+                                                                    "participants"]
+                                                                .length,
                                                             itemBuilder:
                                                                 (BuildContext
                                                                         context,
                                                                     int index) {
-                                                              return Container(
-                                                                  child:
-                                                                      Padding(
+                                                              return Padding(
                                                                 padding:
                                                                     const EdgeInsets
                                                                         .fromLTRB(
@@ -385,30 +389,28 @@ class _Event_pageState extends State<Event_page> {
                                                                 child: Row(
                                                                   children: [
                                                                     CircleAvatar(
-                                                                      backgroundImage: AssetImage(events_add_page[
-                                                                              Event_index]
-                                                                          .participants[
-                                                                              index]
-                                                                          .avatarUrl!),
+                                                                      backgroundImage:
+                                                                          AssetImage(widget.event["participants"][index]
+                                                                              [
+                                                                              "avatarUrl"]),
                                                                       minRadius:
                                                                           17.0,
                                                                       maxRadius:
                                                                           17.0,
                                                                     ),
-                                                                    SizedBox(
+                                                                    const SizedBox(
                                                                       width: 15,
                                                                     ),
-                                                                    // Text("${events_add_page[Event_index]  TODO
-                                                                    //         .participants[index]
-                                                                    //         .username}  ")
+                                                                    Text(
+                                                                        "${widget.event["participants"][index]["username"]}  ")
                                                                   ],
                                                                 ),
-                                                              ));
+                                                              );
                                                             }),
                                                       ));
                                                 });
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.people_alt_outlined,
                                             color: Colors.blueGrey,
                                           ),
@@ -436,23 +438,19 @@ class _Event_pageState extends State<Event_page> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
-                           Column(
+                          Column(
                             children: [
-                              // Text(
-                              //   events_add_page[Event_index]
-                              //           .participants
-                              //           .length
-                              //           .toString() +
-                              //       " уже идут",
-                              //   style: TextStyle(
-                              //     fontSize: 17,
-                              //     //fontFamily: 'Oswald',
-                              //     color: Colors.blueGrey,
-                              //   ),
-                              // )
+                              Text(
+                                "${widget.event["participants"] != null ? widget.event["participants"].length : 0} уже идут",
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  //fontFamily: 'Oswald',
+                                  color: Colors.blueGrey,
+                                ),
+                              )
                             ],
                           ),
                         ],
@@ -461,106 +459,82 @@ class _Event_pageState extends State<Event_page> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         textDirection: TextDirection.rtl,
                         children: [
-                          Container(
-                            // decoration: new BoxDecoration(
-                            // border: Border.all(
-                            //   width: 1,
-                            // ),
-                            // color: Colors.green,
-                            //),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              textDirection: TextDirection.rtl,
-                              children: [
-                                //SizedBox(width: 90,),
-                                TextButton(
-                                    onPressed: () {
-                                      if (!(events_add_page[Event_index]
-                                          .participants
-                                          .any((user) =>
-                                              user.id == current_user.id))) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                  title: const Text(
-                                                    'Вы уверены, что хотите присоединиться к мероприятию?',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontFamily: 'Oswald',
-                                                      color: Colors.black,
-                                                    ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            textDirection: TextDirection.rtl,
+                            children: [
+                              //SizedBox(width: 90,),
+                              TextButton(
+                                  onPressed: () {
+                                    if (!(widget.event["participants"].any(
+                                        (user) =>
+                                            user["id"] == current_user.id))) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: const Text(
+                                                  'Вы уверены, что хотите присоединиться к мероприятию?',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontFamily: 'Oswald',
+                                                    color: Colors.black,
                                                   ),
-                                                  content: Row(
-                                                    children: [
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              events_add_page[
-                                                                      Event_index]
-                                                                  .participants
-                                                                  .add(
-                                                                      current_user);
-                                                              my_events.add(
-                                                                  events_add_page[
-                                                                      Event_index]);
-                                                              u_r_member =
-                                                                  "Вы участник!";
-                                                            });
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text("Да")),
-                                                      TextButton(
+                                                ),
+                                                content: Row(
+                                                  children: [
+                                                    TextButton(
                                                         onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        child: const Text(
-                                                            "Нужно подумать!"),
-                                                      ),
-                                                    ],
-                                                  ));
-                                            });
-                                      } else {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return const AlertDialog(
-                                                title: Text(
-                                                    'Вы уже присоединились к событию!',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontFamily: 'Oswald',
-                                                      color: Colors.black,
-                                                    )),
-                                              );
-                                            });
-                                        //sleep(Duration(seconds:3));
-                                        //Navigator.pop(context);
-                                      }
-
-                                      ;
-                                    },
-                                    style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.only(
-                                          left: 20, right: 20),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(40),
-                                      ),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 74, 68, 134),
-                                      //foregroundColor: Colors.pink,
+                                                            addUser(context),
+                                                        child:
+                                                            const Text("Да")),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: const Text(
+                                                          "Нужно подумать!"),
+                                                    ),
+                                                  ],
+                                                ));
+                                          });
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const AlertDialog(
+                                              title: Text(
+                                                  'Вы уже присоединились к событию!',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontFamily: 'Oswald',
+                                                    color: Colors.black,
+                                                  )),
+                                            );
+                                          });
+                                      //sleep(Duration(seconds:3));
+                                      //Navigator.pop(context);
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40),
                                     ),
-                                    child: Text(
-                                      "Присоединиться!", //TODO
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        //fontFamily: 'Oswald',
-                                        color: Colors.white,
-                                      ),
-                                    ))
-                              ],
-                            ),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 74, 68, 134),
+                                    //foregroundColor: Colors.pink,
+                                  ),
+                                  child: Text(
+                                    u_r_member, //TODO
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      //fontFamily: 'Oswald',
+                                      color: Colors.white,
+                                    ),
+                                  ))
+                            ],
                           )
                         ],
                       ),
@@ -643,7 +617,7 @@ class _Event_pageState extends State<Event_page> {
                                                     ["autor"]["username"],
                                                 softWrap: true,
                                                 maxLines: 6,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 17,
                                                   fontFamily: 'Oswald',
                                                   color: Color.fromARGB(
@@ -684,7 +658,7 @@ class _Event_pageState extends State<Event_page> {
                                 ),
                                 Row(
                                   children: [
-                                     Column(
+                                    const Column(
                                       children: [
                                         //padding: const EdgeInsets.only(bottom: ),
                                         SizedBox(
@@ -750,8 +724,7 @@ class _Event_pageState extends State<Event_page> {
 
                         //   )
                         // );
-                      }
-                      ),
+                      }),
                 ),
               ]),
             ],
@@ -899,7 +872,24 @@ class _Event_pageState extends State<Event_page> {
                       ],
                     ),
                   ))),
-        )
-    );
+        ));
+  }
+
+  addUser(context) async {
+    widget.event["participants"].add({
+      "username": current_user.username,
+      "avatarUrl": current_user.avatarUrl,
+      "email": current_user.email,
+      "id": current_user.id,
+      "age": current_user.age,
+      "is_admin": current_user.is_admin,
+      "profile_description": current_user.profile_description,
+    });
+    setState(() {});
+    await Ev.Event()
+        .addParticipants(widget.event["id"], widget.event["participants"]);
+    u_r_member = "Вы участник!";
+    setState(() {});
+    Navigator.pop(context);
   }
 }

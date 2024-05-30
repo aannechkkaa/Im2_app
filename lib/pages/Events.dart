@@ -7,7 +7,6 @@ import 'package:im2/pages/Users.dart';
 import 'package:im2/pages/Message.dart';
 import 'package:im2/pages/add_event.dart';
 
-
 class Event with ChangeNotifier {
   String _category = "";
   String _name = "";
@@ -20,7 +19,7 @@ class Event with ChangeNotifier {
   TimeOfDay _Time = TimeOfDay.now();
   int _index = 0;
   List<Comment_class> _comments = [];
-  List<Message_class> _messages = [];//лист сообщений
+  List<Message_class> _messages = []; //лист сообщений
   List<User> _participants = [];
 
   User get event_autor => _event_autor;
@@ -90,6 +89,7 @@ class Event with ChangeNotifier {
       'picURL2': _picURL2,
       'comments': [],
       'messages': [],
+      'participants': [],
       'event_autor': {
         "username": event_autor.username,
         "avatarUrl": event_autor.avatarUrl,
@@ -108,6 +108,11 @@ class Event with ChangeNotifier {
 
   addComments(ids, comments) async {
     await usersCollection.doc(ids).update({"comments": comments});
+    print("shud");
+  }
+
+  addParticipants(ids, participants) async {
+    await usersCollection.doc(ids).update({"participants": participants});
     print("shud");
   }
 

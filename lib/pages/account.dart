@@ -15,6 +15,7 @@ import 'package:im2/pages/Event.dart';
 
 import 'dart:html' as html;
 
+import 'Chats.dart';
 import 'MyWidgets/home_pics.dart';
 
 class Reg_p extends StatefulWidget {
@@ -60,6 +61,18 @@ class Reg_page extends State<Reg_p> {
       "Я Андрей люблю друзей, театры, кино вытсавки, учусь в ДВФУ по направлению прикладная информатика";
   String? User_avatar_url = current_user.avatarUrl;
   TextEditingController date = TextEditingController();
+  List<dynamic> listEvents = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Event().getEvent().then((value) {
+      listEvents = value
+          .where((e) => e["event_autor"]["id"] == current_user.id)
+          .toList();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -244,14 +257,14 @@ class Reg_page extends State<Reg_p> {
                     padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Text(
                       current_user.profile_description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 17,
                         fontFamily: 'Oswald',
                         color: Colors.blueGrey,
                       ),
                     ),
                   )),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Row(
@@ -261,20 +274,20 @@ class Reg_page extends State<Reg_p> {
                       Container(
                         // margin: const EdgeInsets.all(15.0),
                         // padding: const EdgeInsets.all(3.0),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
                                     color: Colors.white, width: 1.4))),
-                        child: SizedBox(
+                        child: const SizedBox(
                           width: 300,
                         ),
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -290,370 +303,9 @@ class Reg_page extends State<Reg_p> {
                   SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    height: my_events.length * 250,
-                    child: ListView.builder(
-                        itemCount: my_events.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                //fixedSize: Size(MediaQuery.of(context).size.width * 0.95, 170),
-                                padding: EdgeInsets.all(0),
-
-                                backgroundColor: Colors.transparent,
-                                //borderRadius: BorderRadius.all(Radius.circular(20)),
-                                side: BorderSide(
-                                    color: Colors.transparent, width: 1),
-                              ),
-                              onPressed: () {
-                                //Navigator.pushNamed(context, '/event');
-                                //Event_page() event_page = new Event_page();
-                                Event_index = index;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            new Event_page()));
-                              },
-                              key: Key(my_events[index].index.toString()),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.95,
-                                //height: 185,
-                                margin: const EdgeInsets.only(top: 10),
-                                padding: const EdgeInsets.only(
-                                    top: 15, left: 15, bottom: 15),
-                                // constraints: BoxConstraints(
-                                //   minHeight: 40, //minimum height
-                                //   maxHeight: 185,
-                                // ),
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  color: Color.fromARGB(207, 92, 90, 124),
-                                ),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Visibility(
-                                        visible: false,
-                                        child: Row(
-                                          children: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    events_add_page
-                                                        .removeAt(index + 1);
-                                                    current_events
-                                                        .removeAt(index + 1);
-                                                  });
-                                                },
-                                                child: Text("Удалить"))
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 70,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(width: 20),
-                                            Text(
-                                              my_events[index]
-                                                      .Date
-                                                      .day
-                                                      .toString() +
-                                                  "/" +
-                                                  my_events[index]
-                                                      .Date
-                                                      .month
-                                                      .toString() +
-                                                  "/" +
-                                                  (my_events[index]
-                                                              .Date
-                                                              .year
-                                                              .toInt() %
-                                                          100)
-                                                      .toString(),
-                                              style: TextStyle(
-                                                fontSize: 21,
-                                                fontFamily: 'Oswald',
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text(
-                                              my_events[index]
-                                                      .Time
-                                                      .toString()[10] +
-                                                  my_events[index]
-                                                      .Time
-                                                      .toString()[11] +
-                                                  my_events[index]
-                                                      .Time
-                                                      .toString()[12] +
-                                                  my_events[index]
-                                                      .Time
-                                                      .toString()[13] +
-                                                  my_events[index]
-                                                      .Time
-                                                      .toString()[14],
-                                              style: TextStyle(
-                                                fontSize: 21,
-                                                fontFamily: 'Oswald',
-                                                color: Color.fromARGB(
-                                                    255, 248, 231, 174),
-                                              ),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 70,
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              Icon(Icons
-                                                                  .place_outlined),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              Container(
-                                                                width: 40,
-                                                                child: Flexible(
-                                                                  child: Text(
-                                                                    my_events[
-                                                                            index]
-                                                                        .place,
-                                                                    softWrap:
-                                                                        true,
-                                                                    maxLines: 2,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontFamily:
-                                                                          'Oswald',
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          248,
-                                                                          231,
-                                                                          174),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      )
-
-                                                      //Icon(Icons.place_outlined),
-
-                                                      // Flexible
-                                                      //   (child: new Text(Events_list[index].place,
-                                                      //   style: TextStyle(
-                                                      //     fontSize: 15,
-                                                      //     fontFamily: 'Oswald',
-                                                      //     color: Color.fromARGB(255, 154, 220, 184),),
-                                                      //   overflow: TextOverflow.clip,),),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.03,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 5,
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Image(
-                                                  image: AssetImage(
-                                                      'assets/Vector_1.png')),
-                                              // Divider(
-                                              //   height: double.infinity,
-                                              //   thickness: 2,
-                                              //   color: Colors.grey,
-                                              //   indent: 10,
-                                              //   endIndent: 10,
-                                              // )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 5,
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.03,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              ClipOval(
-                                                child: Image.network(
-                                                  my_events[index]
-                                                      .event_autor
-                                                      .avatarUrl!,
-                                                  width: 30,
-                                                  height: 30,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.04,
-                                              ),
-                                              Text(
-                                                my_events[index]
-                                                        .event_autor
-                                                        .username +
-                                                    "," +
-                                                    " " +
-                                                    my_events[index]
-                                                        .event_autor
-                                                        .age
-                                                        .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Oswald',
-                                                  color: Color.fromARGB(
-                                                      255, 248, 231, 174),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.5,
-                                                child: Text(
-                                                  my_events[index].name,
-                                                  softWrap: true,
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: 'Oswald',
-                                                    color: Color.fromARGB(
-                                                        255, 248, 231, 174),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.5,
-                                                child: Text(
-                                                  my_events[index]
-                                                      .shortDescription,
-                                                  softWrap: true,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontFamily: 'Oswald',
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 8,
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              home_pics_builder(context,
-                                                  my_events[index].picURL1),
-                                              SizedBox(
-                                                width: 2,
-                                              ),
-                                              home_pics_builder(context,
-                                                  my_events[index].picURL2),
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ]),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-
+                  listEvent()
                   // ],
                   //),
-
-                  // RatingBar(
-                  //     initialRating: 0,
-                  //     direction: Axis.horizontal,
-                  //     allowHalfRating: true,
-                  //     itemCount: 5,
-                  //     ratingWidget: RatingWidget(
-                  //         full: const Icon(Icons.star, color: Colors.orange),
-                  //         half: const Icon(
-                  //           Icons.star_half,
-                  //           color: Colors.orange,
-                  //         ),
-                  //         empty: const Icon(
-                  //           Icons.star_outline,
-                  //           color: Colors.orange,
-                  //         )),
-                  //     onRatingUpdate: (value) {
-                  //       setState(() {
-                  //         //_ratingValue = value;
-                  //       });
-                  //     }),
                 ],
               ),
             ],
@@ -760,5 +412,308 @@ class Reg_page extends State<Reg_p> {
       ),
     );
   }
+
+  listEvent() {
+    return SizedBox(
+      height: listEvents.length * 250,
+      child: ListView.builder(
+          itemCount: listEvents.length,
+          itemBuilder: (BuildContext context, int index) {
+            return SizedBox(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: Column(
+                  children: [
+                    IntrinsicHeight(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          //fixedSize: Size(MediaQuery.of(context).size.width * 0.95, 170),
+                          padding: const EdgeInsets.all(0),
+
+                          backgroundColor: Colors.transparent,
+                          //borderRadius: BorderRadius.all(Radius.circular(20)),
+                          side: const BorderSide(
+                              color: Colors.transparent, width: 1),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Event_page(
+                                        event: listEvents[index],
+                                      )));
+                        },
+                        // key: Key(current_events[index].index.toString()),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 15, bottom: 15),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color.fromARGB(207, 92, 90, 124),
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible: false,
+                                  child: Row(
+                                    children: [
+                                      TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              events_add_page
+                                                  .removeAt(index + 1);
+                                              current_events
+                                                  .removeAt(index + 1);
+                                            });
+                                          },
+                                          child: const Text("Удалить"))
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 70,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: 20),
+                                      Text(
+                                        "${DateTime.parse(listEvents[index]["date"]).day}/${DateTime.parse(listEvents[index]["date"]).month}/${DateTime.parse(listEvents[index]["date"]).year.toInt() % 100}",
+                                        style: const TextStyle(
+                                          fontSize: 21,
+                                          fontFamily: 'Oswald',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        listEvents[index]["time"],
+                                        style: const TextStyle(
+                                          fontSize: 21,
+                                          fontFamily: 'Oswald',
+                                          color: Color.fromARGB(
+                                              255, 248, 231, 174),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 70,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Icon(Icons
+                                                            .place_outlined),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          width: 40,
+                                                          child: Flexible(
+                                                            child: Text(
+                                                              listEvents[index]
+                                                                  ["place"],
+                                                              softWrap: true,
+                                                              maxLines: 2,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 15,
+                                                                fontFamily:
+                                                                    'Oswald',
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        248,
+                                                                        231,
+                                                                        174),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+
+                                                //Icon(Icons.place_outlined),
+
+                                                // Flexible
+                                                //   (child: new Text(Events_list[index].place,
+                                                //   style: TextStyle(
+                                                //     fontSize: 15,
+                                                //     fontFamily: 'Oswald',
+                                                //     color: Color.fromARGB(255, 154, 220, 184),),
+                                                //   overflow: TextOverflow.clip,),),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 5,
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Image(
+                                            image: AssetImage(
+                                                'assets/Vector_1.png')),
+                                        // Divider(
+                                        //   height: double.infinity,
+                                        //   thickness: 2,
+                                        //   color: Colors.grey,
+                                        //   indent: 10,
+                                        //   endIndent: 10,
+                                        // )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 5,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        ClipOval(
+                                          child: Image.network(
+                                            listEvents[index]["event_autor"]
+                                                    ["avatarUrl"] ??
+                                                "",
+                                            width: 30,
+                                            height: 30,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04,
+                                        ),
+                                        Text(
+                                          listEvents[index]["event_autor"]
+                                                  ["username"] +
+                                              "," +
+                                              " " +
+                                              listEvents[index]["event_autor"]
+                                                      ["age"]
+                                                  .toString(),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: 'Oswald',
+                                            color: Color.fromARGB(
+                                                255, 248, 231, 174),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          child: Text(
+                                            listEvents[index]["name"],
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Oswald',
+                                              color: Color.fromARGB(
+                                                  255, 248, 231, 174),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          child: Text(
+                                            listEvents[index]
+                                                ["shortDescription"],
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'Oswald',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 8,
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        home_pics_builder(context,
+                                            listEvents[index]["picURL1"]),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        home_pics_builder(context,
+                                            listEvents[index]["picURL2"]),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ]),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ));
+          }),
+    );
+  }
+
 //const Account({Key? key}) : super(key: key);
 }
