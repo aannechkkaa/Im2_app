@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:im2/pages/account.dart';
 import 'package:im2/pages/Users.dart';
+import 'package:im2/pages/Chats.dart';
 import 'package:im2/pages/MyWidgets/home_pics.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
@@ -81,7 +82,7 @@ class HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+             Row(
               children: [
                 SizedBox(
                   width: 20,
@@ -543,7 +544,7 @@ class HomeState extends State<Home> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    const Column(
+                                                     Column(
                                                       children: [
                                                         Icon(Icons
                                                             .place_outlined),
@@ -600,7 +601,7 @@ class HomeState extends State<Home> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.03,
                                 ),
-                                const Column(
+                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -753,8 +754,12 @@ class HomeState extends State<Home> {
                           ),
                           TextButton(
                             onPressed: () {
-                              openUrlInBrowser(
-                                  Uri.parse(listEvents[index]["chatLink"]));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Chat_p(
+                                        event: listEvents[index],
+                                      )));
                             },
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(

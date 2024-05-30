@@ -445,7 +445,7 @@ class _Event_pageState extends State<Event_page> {
                           SizedBox(
                             width: 5,
                           ),
-                          const Column(
+                           Column(
                             children: [
                               // Text(
                               //   events_add_page[Event_index]
@@ -690,7 +690,7 @@ class _Event_pageState extends State<Event_page> {
                                 ),
                                 Row(
                                   children: [
-                                    const Column(
+                                     Column(
                                       children: [
                                         //padding: const EdgeInsets.only(bottom: ),
                                         SizedBox(
@@ -756,7 +756,8 @@ class _Event_pageState extends State<Event_page> {
 
                         //   )
                         // );
-                      }),
+                      }
+                      ),
                 ),
               ]),
             ],
@@ -904,6 +905,7 @@ class _Event_pageState extends State<Event_page> {
                       ],
                     ),
                   ))),
-        ));
+        )
+    );
   }
 }

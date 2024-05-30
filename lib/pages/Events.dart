@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:im2/pages/Comment.dart';
 import 'package:im2/pages/Users.dart';
+import 'package:im2/pages/Message.dart';
 import 'package:im2/pages/add_event.dart';
 
 import '../models/event_model.dart';
@@ -20,6 +21,7 @@ class Event with ChangeNotifier {
   TimeOfDay _Time = TimeOfDay.now();
   int _index = 0;
   List<Comment_class> _comments = [];
+  List<Message_class> _messages = [];//лист сообщений
   List<User> _participants = [];
 
   User get event_autor => _event_autor;
@@ -51,6 +53,8 @@ class Event with ChangeNotifier {
   List<Comment_class> get comments => _comments;
 
   List<User> get participants => _participants;
+
+  List<Message_class> get messages => _messages;
 
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('event');
@@ -86,6 +90,7 @@ class Event with ChangeNotifier {
       'picURL1': _picURL1,
       'picURL2': _picURL2,
       'comments': [],
+      'messages': [],
       'event_autor': {
         "username": event_autor.username,
         "avatarUrl": event_autor.avatarUrl,

@@ -82,6 +82,7 @@ class add_event extends StatefulWidget {
   State<add_event> createState() => _add_eventState();
 }
 
+
 class _add_eventState extends State<add_event> {
   String? pic1Url;
   String? pic2Url;
@@ -356,7 +357,7 @@ class _add_eventState extends State<add_event> {
                       ),
                       Row(
                         children: [
-                          const Column(
+                           Column(
                             children: [
                               SizedBox(
                                 width: 7,
@@ -419,7 +420,7 @@ class _add_eventState extends State<add_event> {
                           ),
                           Row(
                             children: [
-                              const Column(
+                               Column(
                                 children: [
                                   SizedBox(
                                     width: 7,
@@ -518,42 +519,7 @@ class _add_eventState extends State<add_event> {
                                       color: Color.fromARGB(255, 50, 50, 50),
                                       fontFamily: 'Oswald')),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const AlertDialog(
-                                          title: Center(
-                                            child: Text(
-                                              "Зачем это нужно?",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: 'Oswald',
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                          content: SizedBox(
-                                            height: 220,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Для обмена личными данными (к примеру, номерами) между участниками события, создателю мероприятия необходимо создать общий чат с помощью бота в Telegram.",
-                                                ),
-                                                Text(
-                                                    "После создания чата скопируйте ссылку на него и вставьте в следующее поле."),
-                                              ],
-                                            ),
-                                          ));
-                                    });
-                              },
-                              icon: Icon(Icons.info_outline),
-                              color: Color.fromARGB(255, 80, 80, 80),
-                              iconSize: 15,
-                            )
+                            // 15
                           ]),
                       SizedBox(
                         height: 25,

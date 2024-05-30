@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:im2/pages/hello_page.dart';
 import 'package:im2/pages/home.dart';
 import 'package:im2/pages/first_page.dart';
+import 'package:im2/pages/Chats.dart';
 import 'package:im2/pages/Event.dart';
 import 'package:im2/pages/account.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
           '/': (context) => const hello_page(),
           '/home': (context) => const Home(),
           '/event': (context) => const Event_page(),
+          '/chat_page': (context) => const Chat_p(),
         },
         theme: ThemeData(primaryColor: Colors.cyan),
       ),

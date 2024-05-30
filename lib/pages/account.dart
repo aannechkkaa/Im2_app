@@ -164,7 +164,7 @@ class Reg_page extends State<Reg_p> {
                       )),
 
                   Text(
-                    current_user.username + ", ", //+ userAge.toString(), TODO
+                    current_user.username + ", " + current_user.age.toString(),
                     style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'Oswald',
