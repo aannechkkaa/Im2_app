@@ -12,12 +12,6 @@ import 'package:page_transition/page_transition.dart';
 
 import 'Users.dart';
 
-// class Comment{
-//   String autor_name = "";
-//   String autor_age = "";
-//   String comment = "";
-//   //String autor_photo = "";
-// }
 class Event_members {
   String name = "Антон";
   int age = 45;
@@ -34,11 +28,11 @@ String isUserExist(List<User> userList, int userId) {
 String u_r_member =
     isUserExist(events_add_page[Event_index].participants, current_user.id);
 String comment_txt = "";
-List<Comment> Comment_list = [];
+//List<Comment> Comment_list = [];
 List<Event_members> Members_list = [];
 TextEditingController _controller = TextEditingController();
 
-final String imagePath = 'assets/wom.jpeg';
+//final String imagePath = 'assets/wom.jpeg';
 bool _isZoomed = false;
 
 class Event_page extends StatefulWidget {

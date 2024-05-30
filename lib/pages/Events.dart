@@ -7,7 +7,6 @@ import 'package:im2/pages/Users.dart';
 import 'package:im2/pages/Message.dart';
 import 'package:im2/pages/add_event.dart';
 
-import '../models/event_model.dart';
 
 class Event with ChangeNotifier {
   String _category = "";
@@ -110,6 +109,11 @@ class Event with ChangeNotifier {
   addComments(ids, comments) async {
     await usersCollection.doc(ids).update({"comments": comments});
     print("shud");
+  }
+
+  addMessages(ids, messages) async {
+    await usersCollection.doc(ids).update({"messages": _messages});
+    print("message_added");
   }
 
   void setEvent_autor(User autor) {
