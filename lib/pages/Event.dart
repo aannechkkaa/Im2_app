@@ -658,7 +658,7 @@ class _Event_pageState extends State<Event_page> {
                                 ),
                                 Row(
                                   children: [
-                                    const Column(
+                                     Column(
                                       children: [
                                         //padding: const EdgeInsets.only(bottom: ),
                                         SizedBox(

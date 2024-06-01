@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:js_util';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:im2/pages/Message.dart';
 import 'package:im2/pages/home.dart';
@@ -25,7 +26,9 @@ class Chat_p extends StatefulWidget {
 
   @override
   State<Chat_p> createState() => _Chat_page();
+
 }
+
 String message_txt = "";
 
 TextEditingController _controller = TextEditingController();
@@ -33,8 +36,23 @@ TextEditingController _controller = TextEditingController();
 
 class _Chat_page extends State<Chat_p> {
 
+
+
+  final ScrollController _scrollController = ScrollController();
   @override
   bool? isCheked = false;
+
+  void initState() {
+    super.initState();
+    // Прокрутка к последнему элементу после построения виджета
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
+  @override
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,169 +82,291 @@ class _Chat_page extends State<Chat_p> {
         ),
         backgroundColor: Color.fromARGB(255, 255, 247, 225),
       body:
+          Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Image.asset(
+                    'assets/bg_img.png',
+                    // Укажите размер изображения
+                    width: MediaQuery.of(context).size.width * 1,
+                    //height: MediaQuery.of(context).size.height * 1,
+                    fit: BoxFit.fill,
+                  ),
+                ],
+              ),
 
+              ListView.builder(
+                  itemCount: widget.event["messages"].length,
+                  controller: _scrollController,
+                  itemBuilder: (BuildContext context, int index) {
+                    bool isCurrentUser = widget.event["messages"][index]["autor"]["id"] == current_user.id;
+                    return
+                      !isCurrentUser ?
+                      Container( //ЕСЛИ СООБЩЕНИЕ ОТПРАВИЛ ДРУГОЙ
+                        child:
 
-
-
-        ListView.builder(
-            itemCount: widget.event["messages"].length,
-            itemBuilder: (BuildContext context, int index) {
-              // return Flexible(
-              //   child:
-              //   Container(
-              //color: Colors.lightGreenAccent,
-              //child:
-              if (widget.event["messages"].length < 1) {
-                widget.event["messages"] = [];
-                return const Text("Оставьте свой комментарий!");
-              } else {
-                return Container(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              Align(
-                                  alignment: Alignment.topLeft,
-                                  child: ClipOval(
-                                    child: Image.network(
-                                      widget.event["messages"][index]
-                                      ["autor"]
-                                      ["avatarUrl"] ??
-                                          "",
-                                      width: 34,
-                                      height: 34,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Column(
-                            children: [
-                              Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.end,
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
                                   children: [
-                                    Text(
-                                      widget.event["messages"][index]
-                                      ["autor"]["username"],
-                                      softWrap: true,
-                                      maxLines: 6,
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontFamily: 'Oswald',
-                                        color: Color.fromARGB(
-                                            255, 50, 50, 50),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      //key: Key(Comment_list[index].comment),
-                                      "${DateTime.parse(widget.event["messages"][index]["messageDate"]).day}/${DateTime.parse(widget.event["comments"][index]["commentDate"]).month}",
-                                      softWrap: true,
-                                      maxLines: 6,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          //ontFamily: 'Oswald',
-                                          color: Colors.blueGrey),
-                                    ),
-                                    Text(
-                                      //key: Key(Comment_list[index].comment),
-                                      //events_add_page[Event_index].comments[index].commentTime.toString(),
-                                      " " +
-                                          widget.event["messages"]
-                                          [index]["messageTime"],
-                                      softWrap: true,
-                                      maxLines: 6,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        // fontFamily: 'Oswald',
-                                        color: Colors.blueGrey,
-                                      ),
-                                    ),
-                                  ]),
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              //padding: const EdgeInsets.only(bottom: ),
-                              SizedBox(
-                                width: 42,
-                                height: 42,
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            children: [
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //
-                              //       key: Key(Comment_list[index].comment),
-                              //       "5 МИНУТ НАЗАД",
-                              //       softWrap: true,
-                              //       maxLines: 6,
-                              //       style:
-                              //       TextStyle(
-                              //         fontSize: 12,
-                              //         fontFamily: 'Oswald',
-                              //         color: Color.fromARGB(255, 247, 190, 59),
-                              //       ),)
-                              //   ],
-                              // ),
-
-                              Container(
-                                width: 220,
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                        child: Text(
-                                          //key: Key(Comment_list[index].comment),
-                                          widget.event["messages"][index]
-                                          ["messageText"],
-                                          softWrap: true,
-                                          maxLines: 6,
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'Oswald',
-                                            color: Color.fromARGB(
-                                                255, 59, 59, 59),
+                                    Align(
+                                        alignment:  Alignment.topLeft,
+                                        child: ClipOval(
+                                          child: Image.network(
+                                            widget.event["messages"][index]["autor"]["avatarUrl"] ?? "",
+                                            width: 34,
+                                            height: 34,
+                                            fit: BoxFit.cover,
                                           ),
                                         ))
                                   ],
                                 ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:  MainAxisAlignment.start,
+                                        crossAxisAlignment:  CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            widget.event["messages"][index]["autor"]["username"],
+                                            softWrap: true,
+                                            maxLines: 6,
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontFamily: 'Oswald',
+                                                color: Color.fromARGB(255, 74, 68, 134)
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 7,
+                                          ),
+                                          Text(
+                                            //key: Key(Comment_list[index].comment),
+                                            "${DateTime.parse(widget.event["messages"][index]["messageDate"]).day}/${DateTime.parse(widget.event["messages"][index]["messageDate"]).month}",
+                                            softWrap: true,
+                                            maxLines: 6,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                //ontFamily: 'Oswald',
+                                                color: Colors.blueGrey),
+                                          ),
+                                          Text(
+                                            //key: Key(Comment_list[index].comment),
+                                            //events_add_page[Event_index].comments[index].commentTime.toString(),
+                                            " " +
+                                                widget.event["messages"][index]["messageTime"],
+                                            softWrap: true,
+                                            maxLines: 6,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              // fontFamily: 'Oswald',
+                                              color: Colors.blueGrey,
+                                            ),
+                                          ),
+                                        ]),
+                                  ],
+                                ),
+
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    //padding: const EdgeInsets.only(bottom: ),
+                                    SizedBox(
+                                      width: 62,
+                                      height: 42,
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  children: [
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.7,
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                              child: Text(
+                                                widget.event["messages"][index]["messageText"],
+                                                softWrap: true,
+                                                maxLines: 6,
+                                                style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontFamily: 'Oswald',
+                                                  color: Color.fromARGB(
+                                                      255, 59, 59, 59),
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            )
+                          ],
+                        ),
+                      )
+                          :
+                      Container( //ЕСЛИ СООБЩЕНИЕ ОТПРАВИЛИ МЫ
+                          child:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                //key: Key(Comment_list[index].comment),
+                                                //events_add_page[Event_index].comments[index].commentTime.toString(),
+                                                widget.event["messages"][index]["messageTime"] + " ",
+                                                softWrap: true,
+                                                maxLines: 6,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  // fontFamily: 'Oswald',
+                                                  color: Colors.blueGrey,
+                                                ),
+                                              ),
+
+                                              Text(
+                                                //key: Key(Comment_list[index].comment),
+                                                "${DateTime.parse(widget.event["messages"][index]["messageDate"]).day}/${DateTime.parse(widget.event["messages"][index]["messageDate"]).month}",
+                                                softWrap: true,
+                                                maxLines: 6,
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    //ontFamily: 'Oswald',
+                                                    color: Colors.blueGrey),
+                                              ),
+
+                                              SizedBox(
+                                                width: 7,
+                                              ),
+
+                                              Text(
+                                                widget.event["messages"][index]["autor"]["username"],
+                                                softWrap: true,
+                                                maxLines: 6,
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontFamily: 'Oswald',
+                                                  color: Color.fromARGB(255, 74, 68, 134),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Align(
+                                              alignment:  Alignment.topLeft,
+                                              child: ClipOval(
+                                                child: Image.network(
+                                                  widget.event["messages"][index]["autor"]["avatarUrl"] ?? "",
+                                                  width: 34,
+                                                  height: 34,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                          )
+                                        ],
+                                      )
+
+                                    ],
+
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Column(
+                                        children: [
+
+                                          Container(
+                                            width: MediaQuery.of(context).size.width * 0.8,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Flexible(
+                                                    child: Text(
+                                                      widget.event["messages"][index]["messageText"],
+                                                      softWrap: true,
+                                                      maxLines: 6,
+                                                      textAlign: TextAlign.end,
+                                                      style: const TextStyle(
+                                                        fontSize: 17,
+                                                        fontFamily: 'Oswald',
+                                                        color: Color.fromARGB(
+                                                            255, 59, 59, 59),
+                                                      ),
+                                                    )),
+                                                SizedBox(
+                                                  width: 52,
+                                                  height: 42,
+                                                )
+
+
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
                               )
                             ],
                           )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      )
-                    ],
-                  ),
-                );
-              }
+                      );
 
-              //   )
-              // );
-            }
-        ),
+                    //   )
+                    // );
+                  }
+              ),
+
+
+            ],
+          ),
+
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           color: Colors.white,
@@ -328,21 +468,14 @@ class _Chat_page extends State<Chat_p> {
                                       await Ev.Event().addMessages(
                                           widget.event["id"],
                                           widget.event["messages"]);
-                                      // events_add_page[Event_index]
-                                      //     .comments
-                                      //     .insert(
-                                      //         0,
-                                      //         Comment_class(
-                                      //           commentText: comment_txt.trim(),
-                                      //           commentId:
-                                      //               events_add_page[Event_index]
-                                      //                   .comments
-                                      //                   .length,
-                                      //           autor: current_user,
-                                      //           commentDate: DateTime.now(),
-                                      //           commentTime: TimeOfDay.now(),
-                                      //         ));
                                       message_txt = "";
+                                      if (_scrollController.hasClients) {
+                                        _scrollController.animateTo(
+                                          _scrollController.position.maxScrollExtent,
+                                          duration: const Duration(milliseconds: 100),
+                                          curve: Curves.easeOut,
+                                        );
+                                      }
                                       //print(Comment_list.length);
                                     });
                                   }

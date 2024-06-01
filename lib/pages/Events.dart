@@ -117,7 +117,7 @@ class Event with ChangeNotifier {
   }
 
   addMessages(ids, messages) async {
-    await usersCollection.doc(ids).update({"messages": _messages});
+    await usersCollection.doc(ids).update({"messages": messages});
     print("message_added");
   }
 

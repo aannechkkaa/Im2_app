@@ -287,7 +287,7 @@ class Reg_page extends State<Reg_p> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
