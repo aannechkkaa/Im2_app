@@ -31,6 +31,7 @@ class HomeState extends State<Home> {
 
   List<Event> filteredEvents = [];
   List<dynamic> listEvents = [];
+  List<dynamic> searchEvents = [];
 
   //Event e1 = new Event();
   int Count = 0;
@@ -82,7 +83,7 @@ class HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-             Row(
+            const Row(
               children: [
                 SizedBox(
                   width: 20,
@@ -112,10 +113,9 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where(
-                                (event) => event.category == "Активный отдых")
-                            .toList());
+                        searchEvents = listEvents
+                            .where((e) => e["category"] == "Активный отдых")
+                            .toList();
                       });
                     },
                     child: Image.asset(
@@ -131,10 +131,13 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where(
-                                (event) => event.category == "Кафе и рестораны")
-                            .toList());
+                        searchEvents = listEvents
+                            .where((e) => e["category"] == "Кафе и рестораны")
+                            .toList();
+                        // current_events = sort_events(events_add_page
+                        //     .where(
+                        //         (event) => event.category == "Кафе и рестораны")
+                        //     .toList());
                       });
                       // Handle button press
                     },
@@ -151,10 +154,14 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where((event) =>
-                                event.category == "Искусство и культура")
-                            .toList());
+                        searchEvents = listEvents
+                            .where(
+                                (e) => e["category"] == "Искусство и культура")
+                            .toList();
+                        // current_events = sort_events(events_add_page
+                        //     .where((event) =>
+                        //         event.category == "Искусство и культура")
+                        //     .toList());
                       });
                     },
                     child: Image.asset(
@@ -170,10 +177,13 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where(
-                                (event) => event.category == "Отдых на природе")
-                            .toList());
+                        searchEvents = listEvents
+                            .where((e) => e["category"] == "Отдых на природе")
+                            .toList();
+                        // current_events = sort_events(events_add_page
+                        //     .where(
+                        //         (event) => event.category == "Отдых на природе")
+                        //     .toList());
                       });
                     },
                     child: Image.asset(
@@ -189,9 +199,12 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where((event) => event.category == "Ночная жизнь")
-                            .toList());
+                        searchEvents = listEvents
+                            .where((e) => e["category"] == "Ночная жизнь")
+                            .toList();
+                        // current_events = sort_events(events_add_page
+                        //     .where((event) => event.category == "Ночная жизнь")
+                        //     .toList());
                       });
                     },
                     child: Image.asset(
@@ -207,9 +220,12 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        current_events = sort_events(events_add_page
-                            .where((event) => event.category == "Путешествия")
-                            .toList());
+                        searchEvents = listEvents
+                            .where((e) => e["category"] == "Путешествия")
+                            .toList();
+                        // current_events = sort_events(events_add_page
+                        //     .where((event) => event.category == "Путешествия")
+                        //     .toList());
                       });
                     },
                     child: Image.asset(
@@ -239,9 +255,14 @@ class HomeState extends State<Home> {
                 TextButton(
                     onPressed: () {
                       setState(() {
-                        current_events = sort_events(events_add_page);
-                        show_url_bttn = false;
-                        list_of = "События в городе";
+                        Event().getEvent().then((value) {
+                          searchEvents.clear();
+                          listEvents = value;
+                          setState(() {});
+                          current_events = sort_events(events_add_page);
+                          show_url_bttn = false;
+                          list_of = "События в городе";
+                        });
                       });
                     },
                     child: const Text(
@@ -265,6 +286,10 @@ class HomeState extends State<Home> {
                 ),
                 TextButton(
                     onPressed: () {
+                      searchEvents = listEvents
+                          .where(
+                              (e) => e["event_autor"]["id"] == current_user.id)
+                          .toList();
                       setState(() {
                         current_events = current_events
                             .where((event) =>
@@ -439,8 +464,10 @@ class HomeState extends State<Home> {
     return SizedBox(
       height: listEvents.length * 250,
       child: ListView.builder(
-          itemCount: listEvents.length,
+          itemCount:
+              searchEvents.isEmpty ? listEvents.length : searchEvents.length,
           itemBuilder: (BuildContext context, int index) {
+            var listEvent = searchEvents.isEmpty ? listEvents : searchEvents;
             return SizedBox(
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: Column(
@@ -468,7 +495,7 @@ class HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Event_page(
-                                        event: listEvents[index],
+                                        event: listEvent[index],
                                       )));
                           // u_r_member = isUserExist(
                           //     events_add_page[Event_index].participants,
@@ -519,7 +546,7 @@ class HomeState extends State<Home> {
                                     children: [
                                       SizedBox(width: 20),
                                       Text(
-                                        "${DateTime.parse(listEvents[index]["date"]).day}/${DateTime.parse(listEvents[index]["date"]).month}/${DateTime.parse(listEvents[index]["date"]).year.toInt() % 100}",
+                                        "${DateTime.parse(listEvent[index]["date"]).day}/${DateTime.parse(listEvent[index]["date"]).month}/${DateTime.parse(listEvent[index]["date"]).year.toInt() % 100}",
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',
@@ -527,7 +554,7 @@ class HomeState extends State<Home> {
                                         ),
                                       ),
                                       Text(
-                                        listEvents[index]["time"],
+                                        listEvent[index]["time"],
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',
@@ -544,7 +571,7 @@ class HomeState extends State<Home> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                     Column(
+                                                    const Column(
                                                       children: [
                                                         Icon(Icons
                                                             .place_outlined),
@@ -556,7 +583,7 @@ class HomeState extends State<Home> {
                                                           width: 40,
                                                           child: Flexible(
                                                             child: Text(
-                                                              listEvents[index]
+                                                              listEvent[index]
                                                                   ["place"],
                                                               softWrap: true,
                                                               maxLines: 2,
@@ -601,7 +628,7 @@ class HomeState extends State<Home> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.03,
                                 ),
-                                 Column(
+                                const Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -647,7 +674,7 @@ class HomeState extends State<Home> {
                                       children: [
                                         ClipOval(
                                           child: Image.network(
-                                            listEvents[index]["event_autor"]
+                                            listEvent[index]["event_autor"]
                                                     ["avatarUrl"] ??
                                                 "",
                                             width: 30,
@@ -662,11 +689,11 @@ class HomeState extends State<Home> {
                                               0.04,
                                         ),
                                         Text(
-                                          listEvents[index]["event_autor"]
+                                          listEvent[index]["event_autor"]
                                                   ["username"] +
                                               "," +
                                               " " +
-                                              listEvents[index]["event_autor"]
+                                              listEvent[index]["event_autor"]
                                                       ["age"]
                                                   .toString(),
                                           style: TextStyle(
@@ -686,7 +713,7 @@ class HomeState extends State<Home> {
                                                   .width *
                                               0.5,
                                           child: Text(
-                                            listEvents[index]["name"],
+                                            listEvent[index]["name"],
                                             softWrap: true,
                                             style: const TextStyle(
                                               fontSize: 18,
@@ -706,7 +733,7 @@ class HomeState extends State<Home> {
                                                   .width *
                                               0.5,
                                           child: Text(
-                                            listEvents[index]
+                                            listEvent[index]
                                                 ["shortDescription"],
                                             softWrap: true,
                                             style: const TextStyle(
@@ -718,7 +745,7 @@ class HomeState extends State<Home> {
                                         )
                                       ],
                                     ),
-                                    Row(
+                                    const Row(
                                       children: [
                                         SizedBox(
                                           height: 8,
@@ -728,12 +755,12 @@ class HomeState extends State<Home> {
                                     Row(
                                       children: [
                                         home_pics_builder(context,
-                                            listEvents[index]["picURL1"]),
-                                        SizedBox(
+                                            listEvent[index]["picURL1"]),
+                                        const SizedBox(
                                           width: 2,
                                         ),
                                         home_pics_builder(context,
-                                            listEvents[index]["picURL2"]),
+                                            listEvent[index]["picURL2"]),
                                       ],
                                     )
                                   ],
@@ -758,8 +785,8 @@ class HomeState extends State<Home> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Chat_p(
-                                        event: listEvents[index],
-                                      )));
+                                            event: listEvent[index],
+                                          )));
                             },
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
@@ -767,7 +794,7 @@ class HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(5),
                               )),
                               backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 251, 194, 235)),
+                                  const Color.fromARGB(255, 251, 194, 235)),
                               //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
                             ),
                             child: const Text("Перейти в чат участников",
