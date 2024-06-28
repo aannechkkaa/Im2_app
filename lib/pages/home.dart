@@ -66,7 +66,7 @@ class HomeState extends State<Home> {
       //backgroundColor: Colors.green,
       appBar: appBar(),
       //backgroundColor: Color.fromARGB(255, 255, 247, 225),
-      backgroundColor: Colors.pink,
+      backgroundColor: Colors.green,
       body: Stack(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -293,65 +293,85 @@ class HomeState extends State<Home> {
               height: 6,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(
-                  width: 10,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 255, 255, 255)),
+
+                          elevation: MaterialStateProperty.all(8.0),
+                          //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            Event().getEvent().then((value) {
+                              searchEvents.clear();
+                              listEvents = value;
+                              setState(() {});
+                              current_events = sort_events(events_add_page);
+                              show_url_bttn = false;
+                              list_of = "События в городе";
+                            });
+                          });
+                        },
+                        child: const Text(
+                          "Показать всe",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Color.fromARGB(255, 50, 50, 50),
+                            fontFamily: 'Oswald',
+                          ),
+                        )),
+                  ],
                 ),
-                TextButton(
-                    onPressed: () {
-                      setState(() {
-                        Event().getEvent().then((value) {
-                          searchEvents.clear();
-                          listEvents = value;
-                          setState(() {});
-                          current_events = sort_events(events_add_page);
-                          show_url_bttn = false;
-                          list_of = "События в городе";
-                        });
-                      });
-                    },
-                    child: const Text(
-                      "Показать всe",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blueGrey,
-                        //fontFamily: 'Oswald',
-                      ),
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                TextButton(
-                    onPressed: () {
-                      searchEvents = listEvents.where((e) => e["participants"]["id"] == current_user.id).toList();
-                      setState(() {
-                        current_events = current_events
-                            .where((event) =>
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 255, 255, 255)),
+
+                          elevation: MaterialStateProperty.all(8.0),
+                          //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                        ),
+                        onPressed: () {
+                          searchEvents = listEvents.where((e) => e["participants"]["id"] == current_user.id).toList();
+                          setState(() {
+                            current_events = current_events
+                                .where((event) =>
                                 event.participants.contains(current_user))
-                            .toList();
-                        show_url_bttn = true;
-                        list_of = "Мой календарь";
-                      });
-                    },
-                    child: const Text(
-                      "Показать только мои события",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blueGrey,
-                        //fontFamily: 'Oswald',
-                      ),
-                    )),
+                                .toList();
+                            show_url_bttn = true;
+                            list_of = "Мой календарь";
+                          });
+                        },
+                        child: const Text(
+                          "Мой календарь",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Color.fromARGB(255, 50, 50, 50),
+                            fontFamily: 'Oswald',
+                          ),
+                        )),
+                  ],
+                ),
               ],
             ),
+
             const SizedBox(
               height: 20,
             ),
@@ -515,25 +535,17 @@ class HomeState extends State<Home> {
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: Column(
                   children: [
-                    IntrinsicHeight(
-                      child: ElevatedButton(
+                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           //fixedSize: Size(MediaQuery.of(context).size.width * 0.95, 170),
                           padding: const EdgeInsets.all(0),
 
                           backgroundColor: Colors.transparent,
-                          //borderRadius: BorderRadius.all(Radius.circular(20)),
                           side: const BorderSide(
                               color: Colors.transparent, width: 1),
                         ),
                         onPressed: () {
-                          //Navigator.pushNamed(context, '/event');
-                          //Event_page() event_page = new Event_page();
-                          // String event_short_description = events_add_page[index].shortDescription;
-                          // Event this_event = events_add_page.firstWhere((event) => event.shortDescription == event_short_description);
-                          // print(this_event.name);
-                          // Event_index = current_events[index].index;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -551,8 +563,7 @@ class HomeState extends State<Home> {
                           width: MediaQuery.of(context).size.width * 0.95,
                           //height: 185,
                           margin: const EdgeInsets.only(top: 10),
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 15, bottom: 15),
+                          padding: const EdgeInsets.only(top: 15, left: 15, bottom: 15),
                           // constraints: BoxConstraints(
                           //   minHeight: 40, //minimum height
                           //   maxHeight: 185,
@@ -562,8 +573,7 @@ class HomeState extends State<Home> {
                             color: Color.fromARGB(207, 92, 90, 124),
                           ),
                           child:
-                          IntrinsicWidth(
-                            child:
+
                           Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -647,10 +657,10 @@ class HomeState extends State<Home> {
                                     ],
                                   ),
                                 ),
-                                // SizedBox(
-                                //   width:
-                                //       MediaQuery.of(context).size.width * 0.03,
-                                // ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                ),
                                 //  Column(
                                 //   mainAxisAlignment: MainAxisAlignment.center,
                                 //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -680,8 +690,8 @@ class HomeState extends State<Home> {
                                 //   ],
                                 // ),
                                 SizedBox(
-                                  width: 30
-                                      //MediaQuery.of(context).size.width * 0.03,
+                                 // width: 30
+                                  width: MediaQuery.of(context).size.width * 0.03,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -698,26 +708,24 @@ class HomeState extends State<Home> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 30,
-                                          //MediaQuery.of(context).size.width * 0.04,
+                                          //width: 30,
+                                          width: MediaQuery.of(context).size.width * 0.04,
                                         ),
                                         Text(
                                           listEvent[index]["event_autor"]["username"] + "," + " " + listEvent[index]["event_autor"]["age"].toString(),
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontFamily: 'Oswald',
-                                            color: Color.fromARGB(
-                                                255, 248, 231, 174),
+                                            color: Color.fromARGB(255, 248, 231, 174),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    IntrinsicWidth(
-                                      child:
+
                                     Row(
                                     children: [
                                     Container(
-                                    width: 100,
+                                      width: MediaQuery.of(context).size.width *0.5,
                                       child: Text(
                                         listEvent[index]["name"],
                                         softWrap: true,
@@ -731,15 +739,13 @@ class HomeState extends State<Home> {
                                     ),
                                     ],
                                     ),
-                                    ),
 
                                     Row(
                                       children: [
                                         Container(
-                                          width: 100,
+                                        width: MediaQuery.of(context).size.width *0.5,
                                           child: Text(
-                                            listEvent[index]
-                                                ["shortDescription"],
+                                            listEvent[index]["shortDescription"],
                                             softWrap: true,
                                             style: const TextStyle(
                                               fontSize: 15,
@@ -773,10 +779,9 @@ class HomeState extends State<Home> {
                                   ],
                                 )
                               ]),
-                          ),
+
                         ),
                       ),
-                    ),
                     const SizedBox(
                       height: 10,
                     ),
