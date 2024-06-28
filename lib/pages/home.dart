@@ -605,8 +605,7 @@ class HomeState extends State<Home> {
                                                   children: [
                                                      Column(
                                                       children: [
-                                                        Icon(Icons
-                                                            .place_outlined),
+                                                        Icon(Icons.place_outlined),
                                                       ],
                                                     ),
                                                     Column(
@@ -620,16 +619,10 @@ class HomeState extends State<Home> {
                                                               softWrap: true,
                                                               maxLines: 2,
                                                               style:
-                                                                  const TextStyle(
-                                                                fontSize: 15,
-                                                                fontFamily:
+                                                                  const TextStyle(fontSize: 15,
+                                                                    fontFamily:
                                                                     'Oswald',
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        248,
-                                                                        231,
-                                                                        174),
+                                                                color: Color.fromARGB(255, 248, 231, 174),
                                                               ),
                                                             ),
                                                           ),
@@ -656,10 +649,10 @@ class HomeState extends State<Home> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.03,
-                                ),
+                                // SizedBox(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.03,
+                                // ),
                                  Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -675,8 +668,7 @@ class HomeState extends State<Home> {
                                     Row(
                                       children: [
                                         Image(
-                                            image: AssetImage(
-                                                'assets/Vector_1.png')),
+                                            image: AssetImage('assets/Vector_1.png')),
                                       ],
                                     ),
                                     Row(
@@ -735,10 +727,7 @@ class HomeState extends State<Home> {
                                     Row(
                                     children: [
                                     Container(
-                                    width: MediaQuery.of(context)
-                                        .size
-                                        .width *
-                                        0.5,
+                                    width: 100,
                                       child: Text(
                                         listEvent[index]["name"],
                                         softWrap: true,
@@ -757,10 +746,7 @@ class HomeState extends State<Home> {
                                     Row(
                                       children: [
                                         Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
+                                          width: 100,
                                           child: Text(
                                             listEvent[index]
                                                 ["shortDescription"],
@@ -781,16 +767,18 @@ class HomeState extends State<Home> {
                                         )
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        home_pics_builder(context,
-                                            listEvent[index]["picURL1"]),
-                                        const SizedBox(
-                                          width: 2,
-                                        ),
-                                        home_pics_builder(context,
-                                            listEvent[index]["picURL2"]),
-                                      ],
+                                    Container(
+                                      child:  Row(
+                                        children: [
+                                          home_pics_builder(context,
+                                              listEvent[index]["picURL1"]),
+                                          const SizedBox(
+                                            width: 2,
+                                          ),
+                                          home_pics_builder(context,
+                                              listEvent[index]["picURL2"]),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 )
