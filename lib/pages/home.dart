@@ -290,7 +290,7 @@ class HomeState extends State<Home> {
               ),
             ),
             SizedBox(
-              height: 6,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
