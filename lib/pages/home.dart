@@ -563,27 +563,13 @@ class HomeState extends State<Home> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: Color.fromARGB(207, 92, 90, 124),
                           ),
-                          child: Row(
+                          child:
+                          IntrinsicWidth(
+                            child:
+                          Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Visibility(
-                                  visible: false,
-                                  child: Row(
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              events_add_page
-                                                  .removeAt(index + 1);
-                                              current_events
-                                                  .removeAt(index + 1);
-                                            });
-                                          },
-                                          child: const Text("Удалить"))
-                                    ],
-                                  ),
-                                ),
                                 SizedBox(
                                   width: 70,
                                   child: Column(
@@ -682,6 +668,7 @@ class HomeState extends State<Home> {
                                       children: [
                                         SizedBox(
                                           height: 5,
+                                          width: 1,
                                         )
                                       ],
                                     ),
@@ -690,19 +677,13 @@ class HomeState extends State<Home> {
                                         Image(
                                             image: AssetImage(
                                                 'assets/Vector_1.png')),
-                                        // Divider(
-                                        //   height: double.infinity,
-                                        //   thickness: 2,
-                                        //   color: Colors.grey,
-                                        //   indent: 10,
-                                        //   endIndent: 10,
-                                        // )
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         SizedBox(
                                           height: 5,
+                                          width: 1,
                                         )
                                       ],
                                     ),
@@ -749,26 +730,30 @@ class HomeState extends State<Home> {
                                         ),
                                       ],
                                     ),
+                                    IntrinsicWidth(
+                                      child:
                                     Row(
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          child: Text(
-                                            listEvent[index]["name"],
-                                            softWrap: true,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: 'Oswald',
-                                              color: Color.fromARGB(
-                                                  255, 248, 231, 174),
-                                            ),
-                                          ),
+                                    children: [
+                                    Container(
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.5,
+                                      child: Text(
+                                        listEvent[index]["name"],
+                                        softWrap: true,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: 'Oswald',
+                                          color: Color.fromARGB(
+                                              255, 248, 231, 174),
                                         ),
-                                      ],
+                                      ),
                                     ),
+                                    ],
+                                    ),
+                                    ),
+
                                     Row(
                                       children: [
                                         Container(
@@ -810,6 +795,7 @@ class HomeState extends State<Home> {
                                   ],
                                 )
                               ]),
+                          ),
                         ),
                       ),
                     ),
