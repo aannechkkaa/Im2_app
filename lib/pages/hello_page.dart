@@ -25,26 +25,27 @@ class _hello_pageState extends State<hello_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:  Color.fromARGB(255, 255, 247, 225),
+        backgroundColor:  Colors.red,
+        // backgroundColor:  Color.fromARGB(255, 255, 247, 225),
       body:
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.asset("assets/lolgo.gif",
-                  width: 200,
-                  height: 200,),
-              ),
-              Center(
-                child: SvgPicture.asset(
-                  'assets/hello_page_logo.svg',
-                  // Укажите размер изображения
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  //height: 130,
-                ),
-
-              )
-            ],
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Center(
+          //       child: Image.asset("assets/lolgo.gif",
+          //         width: 200,
+          //         height: 200,),
+          //     ),
+          //     Center(
+          //       // child: SvgPicture.asset(
+          //       //   'assets/hello_page_logo.svg',
+          //       //   // Укажите размер изображения
+          //       //   width: MediaQuery.of(context).size.width * 0.8,
+          //       //   //height: 130,
+          //       // ),
+          //
+          //     )
+          //   ],
           )
         
     );

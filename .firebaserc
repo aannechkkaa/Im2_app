@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "production": "im2-1-ab254",
+    "default": "im2-1-ab254"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
