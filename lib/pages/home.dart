@@ -293,6 +293,7 @@ class HomeState extends State<Home> {
               height: 6,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
