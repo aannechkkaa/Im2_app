@@ -25,7 +25,7 @@ class _hello_pageState extends State<hello_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:  Colors.red,
+        backgroundColor:  Colors.blue,
         // backgroundColor:  Color.fromARGB(255, 255, 247, 225),
       body:
           Column(
