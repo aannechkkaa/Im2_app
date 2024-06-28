@@ -65,7 +65,8 @@ class HomeState extends State<Home> {
     return Scaffold(
       //backgroundColor: Colors.green,
       appBar: appBar(),
-      backgroundColor: Color.fromARGB(255, 255, 247, 225),
+      //backgroundColor: Color.fromARGB(255, 255, 247, 225),
+      backgroundColor: Colors.pink,
       body: Stack(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -331,10 +332,7 @@ class HomeState extends State<Home> {
                 ),
                 TextButton(
                     onPressed: () {
-                      searchEvents = listEvents
-                          .where(
-
-                              (e) => e["participants"]["id"] == current_user.id).toList();
+                      searchEvents = listEvents.where((e) => e["participants"]["id"] == current_user.id).toList();
                       setState(() {
                         current_events = current_events
                             .where((event) =>
@@ -595,57 +593,57 @@ class HomeState extends State<Home> {
                                         ),
                                       ),
                                       SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                     Column(
-                                                      children: [
-                                                        Icon(Icons.place_outlined),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Container(
-                                                          width: 40,
-                                                          child: Flexible(
-                                                            child: Text(
-                                                              listEvent[index]
-                                                                  ["place"],
-                                                              softWrap: true,
-                                                              maxLines: 2,
-                                                              style:
-                                                                  const TextStyle(fontSize: 15,
-                                                                    fontFamily:
-                                                                    'Oswald',
-                                                                color: Color.fromARGB(255, 248, 231, 174),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                )
-
-                                                //Icon(Icons.place_outlined),
-
-                                                // Flexible
-                                                //   (child: new Text(Events_list[index].place,
-                                                //   style: TextStyle(
-                                                //     fontSize: 15,
-                                                //     fontFamily: 'Oswald',
-                                                //     color: Color.fromARGB(255, 154, 220, 184),),
-                                                //   overflow: TextOverflow.clip,),),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      )
+                                      // Row(
+                                      //   children: [
+                                      //     SizedBox(
+                                      //       width: 70,
+                                      //       child: Column(
+                                      //         children: [
+                                      //           Row(
+                                      //             children: [
+                                      //                Column(
+                                      //                 children: [
+                                      //                   Icon(Icons.place_outlined),
+                                      //                 ],
+                                      //               ),
+                                      //               Column(
+                                      //                 children: [
+                                      //                   Container(
+                                      //                     width: 40,
+                                      //                     child: Flexible(
+                                      //                       child: Text(
+                                      //                         listEvent[index]
+                                      //                             ["place"],
+                                      //                         softWrap: true,
+                                      //                         maxLines: 2,
+                                      //                         style:
+                                      //                             const TextStyle(fontSize: 15,
+                                      //                               fontFamily:
+                                      //                               'Oswald',
+                                      //                           color: Color.fromARGB(255, 248, 231, 174),
+                                      //                         ),
+                                      //                       ),
+                                      //                     ),
+                                      //                   )
+                                      //                 ],
+                                      //               )
+                                      //             ],
+                                      //           )
+                                      //
+                                      //           //Icon(Icons.place_outlined),
+                                      //
+                                      //           // Flexible
+                                      //           //   (child: new Text(Events_list[index].place,
+                                      //           //   style: TextStyle(
+                                      //           //     fontSize: 15,
+                                      //           //     fontFamily: 'Oswald',
+                                      //           //     color: Color.fromARGB(255, 154, 220, 184),),
+                                      //           //   overflow: TextOverflow.clip,),),
+                                      //         ],
+                                      //       ),
+                                      //     )
+                                      //   ],
+                                      // )
                                     ],
                                   ),
                                 ),
@@ -653,37 +651,37 @@ class HomeState extends State<Home> {
                                 //   width:
                                 //       MediaQuery.of(context).size.width * 0.03,
                                 // ),
-                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 5,
-                                          width: 1,
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Image(
-                                            image: AssetImage('assets/Vector_1.png')),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 5,
-                                          width: 1,
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                //  Column(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   crossAxisAlignment: CrossAxisAlignment.center,
+                                //   children: [
+                                //     Row(
+                                //       children: [
+                                //         SizedBox(
+                                //           height: 5,
+                                //           width: 1,
+                                //         )
+                                //       ],
+                                //     ),
+                                //     Row(
+                                //       children: [
+                                //         Image(
+                                //             image: AssetImage('assets/Vector_1.png')),
+                                //       ],
+                                //     ),
+                                //     Row(
+                                //       children: [
+                                //         SizedBox(
+                                //           height: 5,
+                                //           width: 1,
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ],
+                                // ),
                                 SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.03,
+                                  width: 30
+                                      //MediaQuery.of(context).size.width * 0.03,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -700,19 +698,11 @@ class HomeState extends State<Home> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.04,
+                                          width: 30,
+                                          //MediaQuery.of(context).size.width * 0.04,
                                         ),
                                         Text(
-                                          listEvent[index]["event_autor"]
-                                                  ["username"] +
-                                              "," +
-                                              " " +
-                                              listEvent[index]["event_autor"]
-                                                      ["age"]
-                                                  .toString(),
+                                          listEvent[index]["event_autor"]["username"] + "," + " " + listEvent[index]["event_autor"]["age"].toString(),
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontFamily: 'Oswald',
@@ -790,40 +780,40 @@ class HomeState extends State<Home> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Visibility(
-                      visible: show_url_bttn,
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Chat_p(
-                                            event: listEvent[index],
-                                          )));
-                            },
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              )),
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromARGB(255, 251, 194, 235)),
-                              //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                            ),
-                            child: const Text("Перейти в чат участников",
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    color: Color.fromARGB(255, 50, 50, 50),
-                                    fontFamily: 'Oswald')),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Visibility(
+                    //   visible: show_url_bttn,
+                    //   child: Row(
+                    //     children: [
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       TextButton(
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) => Chat_p(
+                    //                         event: listEvent[index],
+                    //                       )));
+                    //         },
+                    //         style: ButtonStyle(
+                    //           shape: MaterialStateProperty.all(
+                    //               RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(5),
+                    //           )),
+                    //           backgroundColor: MaterialStateProperty.all(
+                    //               const Color.fromARGB(255, 251, 194, 235)),
+                    //           //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                    //         ),
+                    //         child: const Text("Перейти в чат участников",
+                    //             style: TextStyle(
+                    //                 fontSize: 17,
+                    //                 color: Color.fromARGB(255, 50, 50, 50),
+                    //                 fontFamily: 'Oswald')),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 10,
                     )
@@ -833,11 +823,11 @@ class HomeState extends State<Home> {
     );
   }
 
-  void openUrlInBrowser(Uri url) async {
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // void openUrlInBrowser(Uri url) async {
+  //   if (await canLaunchUrl(url)) {
+  //     await launchUrl(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 }
