@@ -68,7 +68,8 @@ class Reg_route_state extends State<Reg_route>{
         ),
         centerTitle: true,
       ),
-      backgroundColor: Color.fromARGB(255, 255, 247, 225),
+     // backgroundColor: Color.fromARGB(255, 255, 247, 225),
+      backgroundColor: Colors.red,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
