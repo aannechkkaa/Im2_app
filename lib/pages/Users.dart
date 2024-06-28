@@ -115,15 +115,21 @@ class User with ChangeNotifier {
     }
   }
 
-  Future<void> updateData(ids, username, email, password, avatarUrl) async {
+  Future<void> updateData(ids, username, email, description, password, avatarUrl) async {
     await usersCollection.doc(ids).update({
       'username': username,
       'password': password,
       'avatarUrl': avatarUrl ?? '',
       'email': email,
+      'profileDescription': description,
     });
   }
 
+  Future<void> updateTheme(ids, bool theme) async {
+    await usersCollection.doc(ids).update({
+      'isAdmin': theme,
+    });
+  }
   void updateUsername(String newUsername) {
     username = newUsername;
     notifyListeners();

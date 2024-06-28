@@ -62,7 +62,7 @@ class _Chat_page extends State<Chat_p> {
             color: Color.fromARGB(255, 50, 50, 50),
             iconSize: 30,
             onPressed: () => {
-              Navigator.push(
+              Navigator.pop(
                   context,
                   PageTransition(
                       type: PageTransitionType.leftToRight, child: Home())

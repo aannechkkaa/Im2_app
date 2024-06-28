@@ -22,17 +22,33 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => User(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const hello_page(),
-          '/home': (context) => const Home(),
-          '/event': (context) => const Event_page(),
-          '/chat_page': (context) => const Chat_p(),
-        },
-        theme: ThemeData(primaryColor: Colors.cyan),
-      ),
+      child: MyApp(),
     ),
   );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const hello_page(),
+        '/home': (context) => const Home(),
+        '/event': (context) => const Event_page(),
+        '/chat_page': (context) => const Chat_p(),
+      },
+      theme: ThemeData(
+        primaryColor: Colors.cyan,
+        brightness: Brightness.light, // Светлая тема
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark, // Темная тема
+        primaryColor: Colors.cyan,
+        // Настройка других параметров для темной темы
+      ),
+      themeMode: ThemeMode.dark, // Автоматический выбор темы в зависимости от настроек системы
+    );
+  }
 }

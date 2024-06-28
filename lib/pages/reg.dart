@@ -172,7 +172,7 @@ class Home_route_state extends State<Home_route> {
                         child: Stack(children: <Widget>[
                           Center(
                               child: Container(
-                            child: buildAvatar(avatarUrl),
+                            child: buildAvatar(context, avatarUrl),
                             //padding: EdgeInsets.all(8),
                           )),
                           Center(
@@ -206,6 +206,7 @@ class Home_route_state extends State<Home_route> {
                           user_name_reg = user_name.trim();
                         });
                       },
+                      maxLength: 28,
                       //obscureText: true,
                       decoration:
                           //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
@@ -272,6 +273,7 @@ class Home_route_state extends State<Home_route> {
                   Card(
                     color: Color.fromARGB(200, 255, 255, 255),
                     child: TextField(
+                      maxLength: 270,
                       //keyboardType: TextInputType.emailAddress,
                       // obscureText: true,
                       decoration:

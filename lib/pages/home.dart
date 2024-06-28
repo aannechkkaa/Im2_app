@@ -12,11 +12,15 @@ import 'package:im2/pages/add_event.dart';
 import 'package:im2/pages/mycalendar.dart';
 import 'package:im2/pages/Events.dart';
 
+
+List<dynamic> costyl = [];
+int cotyl_index = 1;
 List<Event> sort_events(List<Event> events) {
   events.sort((a, b) => a.Date.compareTo(b.Date));
   //events.sort((a, b) => a.Time.compareTo(b.Time));
   return events;
 }
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -25,6 +29,7 @@ class Home extends StatefulWidget {
   @override
   HomeState createState() => HomeState();
 }
+
 
 class HomeState extends State<Home> {
   List<Event> current_events = sort_events(events_add_page);
@@ -83,7 +88,7 @@ class HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+             Row(
               children: [
                 SizedBox(
                   width: 20,
@@ -113,9 +118,18 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where((e) => e["category"] == "Активный отдых")
-                            .toList();
+                        if(listEvents.where((e) => e["category"] == "Активный отдых").toList().length == 0){
+                          searchEvents == 0;
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Активный отдых")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Активный отдых")
+                          //     .toList());
+                        }
                       });
                     },
                     child: Image.asset(
@@ -131,13 +145,19 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where((e) => e["category"] == "Кафе и рестораны")
-                            .toList();
-                        // current_events = sort_events(events_add_page
-                        //     .where(
-                        //         (event) => event.category == "Кафе и рестораны")
-                        //     .toList());
+                        if(listEvents
+                            .where((e) => e["category"] == "Кафе и рестораны").toList().length == 0){
+                          searchEvents == 0;
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Кафе и рестораны")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Кафе и рестораны")
+                          //     .toList());
+                        }
                       });
                       // Handle button press
                     },
@@ -154,14 +174,18 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where(
-                                (e) => e["category"] == "Искусство и культура")
-                            .toList();
-                        // current_events = sort_events(events_add_page
-                        //     .where((event) =>
-                        //         event.category == "Искусство и культура")
-                        //     .toList());
+                        if(listEvents.where((e) => e["category"] == "Искусство и культура").toList().length == 0){
+                          searchEvents == 0;
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Искусство и культура")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Кафе и рестораны")
+                          //     .toList());
+                        }
                       });
                     },
                     child: Image.asset(
@@ -177,13 +201,19 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where((e) => e["category"] == "Отдых на природе")
-                            .toList();
-                        // current_events = sort_events(events_add_page
-                        //     .where(
-                        //         (event) => event.category == "Отдых на природе")
-                        //     .toList());
+                        if(listEvents.where((e) => e["category"] == "Отдых на природе").toList().length == 0){
+                          searchEvents == [];
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Отдых на природе")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Отдых на природе")
+                          //     .toList());
+                        }
+
                       });
                     },
                     child: Image.asset(
@@ -199,12 +229,19 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where((e) => e["category"] == "Ночная жизнь")
-                            .toList();
-                        // current_events = sort_events(events_add_page
-                        //     .where((event) => event.category == "Ночная жизнь")
-                        //     .toList());
+
+                        if(listEvents.where((e) => e["category"] == "Ночная жизнь").toList().length == 0){
+                          searchEvents == [];
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Ночная жизнь")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Ночная жизнь")
+                          //     .toList());
+                        }
                       });
                     },
                     child: Image.asset(
@@ -220,12 +257,20 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        searchEvents = listEvents
-                            .where((e) => e["category"] == "Путешествия")
-                            .toList();
-                        // current_events = sort_events(events_add_page
-                        //     .where((event) => event.category == "Путешествия")
-                        //     .toList());
+
+                        if(listEvents.where((e) => e["category"] == "Путешествия").toList().length == 0){
+                          searchEvents == [];
+                        }
+                        else{
+                          searchEvents = listEvents
+                              .where((e) => e["category"] == "Путешествия")
+                              .toList();
+                          // current_events = sort_events(events_add_page
+                          //     .where(
+                          //         (event) => event.category == "Путешествия")
+                          //     .toList());
+                        }
+
                       });
                     },
                     child: Image.asset(
@@ -288,8 +333,8 @@ class HomeState extends State<Home> {
                     onPressed: () {
                       searchEvents = listEvents
                           .where(
-                              (e) => e["event_autor"]["id"] == current_user.id)
-                          .toList();
+
+                              (e) => e["participants"]["id"] == current_user.id).toList();
                       setState(() {
                         current_events = current_events
                             .where((event) =>
@@ -497,6 +542,8 @@ class HomeState extends State<Home> {
                                   builder: (context) => Event_page(
                                         event: listEvent[index],
                                       )));
+                          costyl = listEvents;
+                          cotyl_index = index;
                           // u_r_member = isUserExist(
                           //     events_add_page[Event_index].participants,
                           //     current_user.id);
@@ -554,12 +601,11 @@ class HomeState extends State<Home> {
                                         ),
                                       ),
                                       Text(
-                                        listEvent[index]["time"],
+                                        listEvent[index]["time"].split(':').map((e) => e.padLeft(2, '0')).join(':'),
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',
-                                          color: Color.fromARGB(
-                                              255, 248, 231, 174),
+                                          color: Color.fromARGB(255, 248, 231, 174),
                                         ),
                                       ),
                                       SizedBox(height: 10),
@@ -571,7 +617,7 @@ class HomeState extends State<Home> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    const Column(
+                                                     Column(
                                                       children: [
                                                         Icon(Icons
                                                             .place_outlined),
@@ -628,7 +674,7 @@ class HomeState extends State<Home> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.03,
                                 ),
-                                const Column(
+                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -674,9 +720,7 @@ class HomeState extends State<Home> {
                                       children: [
                                         ClipOval(
                                           child: Image.network(
-                                            listEvent[index]["event_autor"]
-                                                    ["avatarUrl"] ??
-                                                "",
+                                            listEvent[index]["event_autor"]["avatarUrl"] ?? "",
                                             width: 30,
                                             height: 30,
                                             fit: BoxFit.cover,
@@ -745,7 +789,7 @@ class HomeState extends State<Home> {
                                         )
                                       ],
                                     ),
-                                    const Row(
+                                     Row(
                                       children: [
                                         SizedBox(
                                           height: 8,

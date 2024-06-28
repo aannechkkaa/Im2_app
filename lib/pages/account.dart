@@ -148,7 +148,7 @@ class Reg_page extends State<Reg_p> {
                         child: Stack(children: <Widget>[
                           Center(
                               child: Container(
-                            child: buildAvatar(User_avatar_url),
+                            child: buildAvatar(context, User_avatar_url),
                             //padding: EdgeInsets.all(8),
                           )),
                           // Center(
@@ -491,7 +491,7 @@ class Reg_page extends State<Reg_p> {
                                         ),
                                       ),
                                       Text(
-                                        listEvents[index]["time"],
+                                          listEvents[index]["time"].split(':').map((e) => e.padLeft(2, '0')).join(':'),
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',

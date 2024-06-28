@@ -1,21 +1,23 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:im2/pages/Events.dart' as Ev;
-import 'package:im2/pages/add_event.dart';
-import 'package:im2/pages/mycalendar.dart';
-import 'package:im2/pages/MyWidgets/Zoomable_widget.dart';
-
+import 'package:im2/pages/Chats.dart';
+import 'package:im2/pages/user_page.dart';
 import 'package:im2/pages/MyWidgets/Event_pics_builder.dart';
 import 'package:im2/pages/home.dart';
 import 'package:page_transition/page_transition.dart';
-
 import 'Users.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+
 
 class Event_members {
   String name = "Антон";
   int age = 45;
 }
+
+bool show_url_bttn = false;
+
 
 String isUserExist(dynamic userList, dynamic userId) {
   if (userList.any((user) => user["id"] == userId)) {
@@ -24,6 +26,16 @@ String isUserExist(dynamic userList, dynamic userId) {
     return "Присоединиться!";
   }
 }
+
+bool bttn(dynamic userList, dynamic userId) {
+  if (userList.any((user) => user["id"] == userId)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
 
 String u_r_member = "Присоединиться";
 String comment_txt = "";
@@ -41,18 +53,30 @@ class Event_page extends StatefulWidget {
 
   @override
   State<Event_page> createState() => _Event_pageState();
+
 }
 
 class _Event_pageState extends State<Event_page> {
   // void Current_event(String name,String short_description,String autor_name, String long_description,String place,String date,String time,){
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     u_r_member = isUserExist(widget.event["participants"], current_user.id);
+    show_url_bttn = bttn(widget.event["participants"], current_user.id);
   }
 
+  void initState2() {
+    super.initState();
+    // Прокрутка к последнему элементу после построения виджета
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,39 +122,54 @@ class _Event_pageState extends State<Event_page> {
           ListView(
             children: [
               Column(children: [
-                Container(
-                  //decoration: new BoxDecoration(
-                  //   borderRadius: new BorderRadius.circular(16.0),
-                  //  color: Colors.red,
-                  //),
-                  //SizedBox(height: 25),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //SizedBox(width: 5),
-                      Padding(
-                        padding: EdgeInsets.all(25.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-
-                          textDirection: TextDirection.ltr,
-                          //mainAxisAlignment: MainAxisAlignment.start,
+                SizedBox(height: 25,),
+               Row(
+                          // mainAxisSize: MainAxisSize.max,
+                          //
+                          // textDirection: TextDirection.ltr,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const SizedBox(
-                              width: 25,
-                            ),
+                            // const SizedBox(
+                            //   width: 25,
+                            // ),
+                            Expanded(child:
                             Column(
                               children: [
                                 //SizedBox(width: 20,),
                                 if (widget.event["event_autor"]["avatarUrl"] !=
                                     null)
-                                  ClipOval(
-                                    child: Image.network(
-                                      widget.event["event_autor"]["avatarUrl"],
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit.cover,
+
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black38.withOpacity(0.3),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(0, 3), // смещение тени
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipOval(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => User_p(
+                                                user: widget.event["event_autor"],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Image.network(
+                                          widget.event["event_autor"]["avatarUrl"],
+                                          width: 60,
+                                          height: 60,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 const SizedBox(
@@ -147,112 +186,134 @@ class _Event_pageState extends State<Event_page> {
                               ],
                             ),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.17,
+
                             ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 45),
-                                      child: Column(
-                                        //mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  const Icon(
-                                                    //Icons.border_color_outlined
-                                                    Icons.place_outlined,
-                                                    color: Color.fromARGB(
-                                                        255, 74, 68, 134),
-                                                  ),
-                                                  Text(
-                                                    widget.event["place"],
-                                                    softWrap: true,
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                      fontSize: 17,
-                                                      fontFamily: 'Oswald',
+
+                            Spacer(),
+
+                            IntrinsicWidth(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child:
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(5),
+                                            bottomLeft: Radius.circular(5),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black38.withOpacity(0.2), // Цвет тени
+                                              spreadRadius: 2, // Распространение тени
+                                              blurRadius: 5, // Радиус размытия тени
+                                              offset: Offset(0, 2), // Смещение тени относительно контейнера
+                                            ),
+                                          ],
+                                        ),
+                                        padding: const EdgeInsets.only(right: 20),
+                                        child: Column(
+                                          //mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Row(
+                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    const Icon(
+                                                      //Icons.border_color_outlined
+                                                      Icons.place_outlined,
                                                       color: Color.fromARGB(
                                                           255, 74, 68, 134),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 25),
-                                                //alignment: Alignment.bottomRight,
-                                                //color: Colors.blue,
-                                                child: Column(
-                                                  children: [
                                                     Text(
-                                                      widget.event["time"],
+                                                      widget.event["place"],
                                                       softWrap: true,
                                                       maxLines: 2,
                                                       style: const TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 17,
                                                         fontFamily: 'Oswald',
                                                         color: Color.fromARGB(
-                                                            255, 50, 50, 50),
+                                                            255, 74, 68, 134),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 20,
-                                              ),
-                                              Container(
-                                                  //color: Colors.red,
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 25),
+                                                  //alignment: Alignment.bottomRight,
+                                                  //color: Colors.blue,
                                                   child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    "${DateTime.parse(widget.event["date"]).day}/${DateTime.parse(widget.event["date"]).month}/${DateTime.parse(widget.event["date"]).year.toInt() % 100}",
-                                                    softWrap: true,
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                      fontSize: 15,
-                                                      fontFamily: 'Oswald',
-                                                      color: Color.fromARGB(
-                                                          255, 50, 50, 50),
-                                                    ),
+                                                    children: [
+                                                      Text(
+                                                        widget.event["time"].replaceAll(':', '').padLeft(4, '0').replaceRange(2, 2, ":"),
+                                                        softWrap: true,
+                                                        maxLines: 2,
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontFamily: 'Oswald',
+                                                          color: Color.fromARGB(255, 50, 50, 50),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ))
-                                            ],
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Container(
+                                                  //color: Colors.red,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          "${DateTime.parse(widget.event["date"]).day}/${DateTime.parse(widget.event["date"]).month}/${DateTime.parse(widget.event["date"]).year.toInt() % 100}",
+                                                          softWrap: true,
+                                                          maxLines: 2,
+                                                          style: const TextStyle(
+                                                            fontSize: 15,
+                                                            fontFamily: 'Oswald',
+                                                            color: Color.fromARGB(
+                                                                255, 50, 50, 50),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ))
+                                              ],
+                                            )
+                                          ],
+                                        ))
+                                  ],
+                                ),
+
+
+                              )
+
                             ),
 
                             //SizedBox(width: 25,),
-                          ],
-                        ),
-                      )
                     ],
                   ),
-                ),
+                SizedBox(height: 25,),
                 Row(
                   children: [
                     const SizedBox(
@@ -325,150 +386,200 @@ class _Event_pageState extends State<Event_page> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  //  decoration: new BoxDecoration(
-                  //   border: Border.all(
-                  //    width: 1,
-                  //    ),
-                  //    color: Colors.green,
-                  //  ),
-                  child: Row(
+                Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        children: [
+                      //SizedBox(width: 20,),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Row(
                                 children: [
                                   Stack(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                      title: const Text(
-                                                        'Уже идут',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontFamily: 'Oswald',
-                                                          color: Color.fromARGB(
-                                                              255, 50, 50, 50),
+                                      //SizedBox(width: 15,),
+                                      IntrinsicWidth(
+                                        child:
+                                        Container(
+                                          width: widget.event["participants"].length >= 3
+                                              ? 3 * 30.0 // Ширина для 3 или более участников
+                                              : widget.event["participants"].length * 50.0, // Ширина для 1 или 2 участников
+                                            //mainAxisSize: MainAxisSize.min,
+                                            height: 60,
+                                            child:
+                                            IconButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (BuildContext context) {
+                                                        return AlertDialog(
+                                                            title: const Text(
+                                                              'Уже идут',
+                                                              style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontFamily: 'Oswald',
+                                                                color: Color.fromARGB(
+                                                                    255, 50, 50, 50),
+                                                              ),
+                                                            ),
+                                                            content: SizedBox(
+                                                              width: 100,
+                                                              height: widget.event["participants"].length *
+                                                                  40,
+                                                              child: ListView.builder(
+                                                                  itemCount: widget
+                                                                      .event[
+                                                                  "participants"]
+                                                                      .length,
+                                                                  itemBuilder:
+                                                                      (BuildContext
+                                                                  context,
+                                                                      int index) {
+                                                                    return Padding(
+                                                                      padding:
+                                                                      const EdgeInsets
+                                                                          .fromLTRB(0, 0, 0, 15.0),
+                                                                      child: Row(
+                                                                        children: [
+                                                                          ClipOval(
+
+
+                                                                            child: GestureDetector(
+                                                                              onTap: () {
+
+                                                                                Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(
+                                                                                      builder: (context) => User_p(
+                                                                                        user: widget.event["participants"][index],
+                                                                                      ),
+                                                                                    ));
+                                                                              },
+                                                                              child: Image.network(
+                                                                                widget.event["participants"][index]["avatarUrl"],
+                                                                                width: 25,
+                                                                                height: 25,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width: 15,
+                                                                          ),
+                                                                          Text(
+                                                                            "${widget.event["participants"][index]["username"]}" + " " + "${widget.event["participants"][index]["age"]}",
+                                                                            style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontFamily: 'Oswald',
+                                                                              color: Color.fromARGB(
+                                                                                  255, 50, 50, 50),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  }),
+                                                            ));
+                                                      });
+                                                },
+                                                icon:
+                                                Stack(
+                                                  children: [
+                                                    if (widget.event["participants"].length >= 1)
+                                                      Positioned(
+                                                        left: 0,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            widget.event["participants"][0]["avatarUrl"],
+                                                            width: 30,
+                                                            height: 30,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
-                                                      content: SizedBox(
-                                                        width: 100,
-                                                        height: widget
-                                                                .event[
-                                                                    "participants"]
-                                                                .length *
-                                                            40,
-                                                        child: ListView.builder(
-                                                            itemCount: widget
-                                                                .event[
-                                                                    "participants"]
-                                                                .length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .fromLTRB(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        15.0),
-                                                                child: Row(
-                                                                  children: [
-                                                                    CircleAvatar(
-                                                                      backgroundImage:
-                                                                          AssetImage(widget.event["participants"][index]
-                                                                              [
-                                                                              "avatarUrl"]),
-                                                                      minRadius:
-                                                                          17.0,
-                                                                      maxRadius:
-                                                                          17.0,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 15,
-                                                                    ),
-                                                                    Text(
-                                                                        "${widget.event["participants"][index]["username"]}  ")
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            }),
-                                                      ));
-                                                });
-                                          },
-                                          icon: const Icon(
-                                            Icons.people_alt_outlined,
-                                            color: Colors.blueGrey,
-                                          ),
-                                          //Container(
-                                          //   width: 150.0,
-                                          //   height: 150.0,
-                                          //   decoration: BoxDecoration(
-                                          //     color: const Color(0xff7c94b6),
-                                          //     image: DecorationImage(
-                                          //       image: AssetImage(current_user.avatarUrl!),
-                                          //       fit: BoxFit.cover,
-                                          //     ),
-                                          //     borderRadius: BorderRadius.all( Radius.circular(50.0)),
-                                          //     border: Border.all(
-                                          //       color: Colors.black38,
-                                          //       width: 1,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ),
+                                                    if (widget.event["participants"].length >= 2)
+                                                      Positioned(
+                                                        left: 18,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            widget.event["participants"][1]["avatarUrl"],
+                                                            width: 30,
+                                                            height: 30,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    if (widget.event["participants"].length >= 3)
+                                                      Positioned(
+                                                        left: 36,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            widget.event["participants"][2]["avatarUrl"],
+                                                            width: 30,
+                                                            height: 30,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                )
+                                              //Container(
+                                              //   width: 150.0,
+                                              //   height: 150.0,
+                                              //   decoration: BoxDecoration(
+                                              //     color: const Color(0xff7c94b6),
+                                              //     image: DecorationImage(
+                                              //       image: AssetImage(current_user.avatarUrl!),
+                                              //       fit: BoxFit.cover,
+                                              //     ),
+                                              //     borderRadius: BorderRadius.all( Radius.circular(50.0)),
+                                              //     border: Border.all(
+                                              //       color: Colors.black38,
+                                              //       width: 1,
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                            ),
+                                          )
                                       ),
                                     ],
                                   ),
+
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${widget.event["participants"] != null ? widget.event["participants"].length : 0} уже идут",
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          fontFamily: 'Oswald',
+                                          color: Colors.blueGrey,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+
+                                    ],
+                                  ),
+
                                 ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                "${widget.event["participants"] != null ? widget.event["participants"].length : 0} уже идут",
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  //fontFamily: 'Oswald',
-                                  color: Colors.blueGrey,
-                                ),
-                              )
-                            ],
-                          ),
+                              ),
+
                         ],
                       ),
+
+
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        textDirection: TextDirection.rtl,
+                        //mainAxisAlignment: MainAxisAlignment.end,
+                        //crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            textDirection: TextDirection.rtl,
-                            children: [
                               //SizedBox(width: 90,),
                               TextButton(
                                   onPressed: () {
-                                    if (!(widget.event["participants"].any(
-                                        (user) =>
-                                            user["id"] == current_user.id))) {
+                                    if (!(widget.event["participants"].any((user) => user["id"] == current_user.id))) {
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -484,8 +595,11 @@ class _Event_pageState extends State<Event_page> {
                                                 content: Row(
                                                   children: [
                                                     TextButton(
-                                                        onPressed: () =>
-                                                            addUser(context),
+                                                        onPressed: () =>{
+                                                             //show_url_bttn = true,
+                                                             addUser(context)
+                                                          },
+
                                                         child:
                                                             const Text("Да")),
                                                     TextButton(
@@ -520,29 +634,75 @@ class _Event_pageState extends State<Event_page> {
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
                                     backgroundColor:
                                         Color.fromARGB(255, 74, 68, 134),
+                                    elevation: 8,
                                     //foregroundColor: Colors.pink,
                                   ),
                                   child: Text(
                                     u_r_member, //TODO
                                     style: const TextStyle(
                                       fontSize: 17,
-                                      //fontFamily: 'Oswald',
+                                      fontFamily: 'Oswald',
                                       color: Colors.white,
                                     ),
                                   ))
-                            ],
-                          )
                         ],
                       ),
                     ],
                   ),
-                ),
                 const SizedBox(
-                  height: 40,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Visibility(
+                      visible: show_url_bttn,
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Chat_p(
+                                        event: costyl[cotyl_index],
+                                      )));
+                            },
+                            style: ButtonStyle(
+
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  )),
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 255, 255, 255)),
+
+                              elevation: MaterialStateProperty.all(8.0),
+                              //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                            ),
+                            child: const Text("Перейти в чат участников",
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    color: Color.fromARGB(255, 50, 50, 50),
+                                    fontFamily: 'Oswald')),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [
+                    SizedBox(height: 20,)
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -566,7 +726,7 @@ class _Event_pageState extends State<Event_page> {
                 ),
                 SizedBox(
                   height: 320,
-                  width: 280,
+                  width: 350,
                   child: ListView.builder(
                       itemCount: widget.event["comments"].length,
                       itemBuilder: (BuildContext context, int index) {
@@ -588,17 +748,28 @@ class _Event_pageState extends State<Event_page> {
                                       children: [
                                         Align(
                                             alignment: Alignment.topLeft,
-                                            child: ClipOval(
-                                              child: Image.network(
-                                                widget.event["comments"][index]
-                                                            ["autor"]
-                                                        ["avatarUrl"] ??
-                                                    "",
-                                                width: 34,
-                                                height: 34,
-                                                fit: BoxFit.cover,
+                                            child:
+                                            ClipOval(
+                                              child: GestureDetector(
+                                                onTap: () {
+
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => User_p(
+                                                          user: widget.event["comments"][index]["autor"],
+                                                        ),
+                                                      ));
+                                                },
+                                                child: Image.network(
+                                                  widget.event["comments"][index]["autor"]["avatarUrl"] ,
+                                                  width: 34,
+                                                  height: 34,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
-                                            ))
+                                            ),
+                                            )
                                       ],
                                     ),
                                     SizedBox(
@@ -831,30 +1002,25 @@ class _Event_pageState extends State<Event_page> {
                                       await Ev.Event().addComments(
                                           widget.event["id"],
                                           widget.event["comments"]);
-                                      // events_add_page[Event_index]
-                                      //     .comments
-                                      //     .insert(
-                                      //         0,
-                                      //         Comment_class(
-                                      //           commentText: comment_txt.trim(),
-                                      //           commentId:
-                                      //               events_add_page[Event_index]
-                                      //                   .comments
-                                      //                   .length,
-                                      //           autor: current_user,
-                                      //           commentDate: DateTime.now(),
-                                      //           commentTime: TimeOfDay.now(),
-                                      //         ));
+
+                                      if (_scrollController.hasClients) {
+                                        _scrollController.animateTo(
+                                          _scrollController.position.maxScrollExtent,
+                                          duration: const Duration(milliseconds: 100),
+                                          curve: Curves.easeOut,
+                                        );
+                                      }
+
                                       comment_txt = "";
-                                      //print(Comment_list.length);
+
                                     });
                                   }
                                 },
-                                icon: Icon(
-                                  color: Color.fromARGB(255, 74, 68, 134),
-                                  Icons.arrow_circle_right_rounded,
-                                  size: 35,
-                                ))
+                              icon:  Icon(
+                                Icons.arrow_circle_right_outlined,
+                                color: Color.fromARGB(255, 74, 68, 134),
+                                size: 35,
+                              ),),
                             // SizedBox(
                             //    width: 25,
                             //    height: 25,

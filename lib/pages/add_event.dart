@@ -460,14 +460,15 @@ class _add_eventState extends State<add_event> {
                                                 color: Colors.blueGrey,
                                                 fontFamily: 'Oswald')),
                                         Text(
-                                            e_dateTime.hour.toString() +
-                                                ":" +
-                                                e_dateTime.minute.toString(),
-                                            style: TextStyle(
-                                                fontSize: 17,
-                                                color: Color.fromARGB(
-                                                    200, 50, 50, 50),
-                                                fontFamily: 'Oswald')),
+                                          e_dateTime != null
+                                              ? "${e_dateTime.hour.toString().padLeft(2, '0')}:${e_dateTime.minute.toString().padLeft(2, '0')}"
+                                              : "",
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            color: Color.fromARGB(200, 50, 50, 50),
+                                            fontFamily: 'Oswald',
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),

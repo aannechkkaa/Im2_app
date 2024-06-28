@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+
 
 Widget event_pics_builder(BuildContext context, String? imageUrl) {
-  if(imageUrl == null){
+  if (imageUrl == null) {
     return Container();
-  }
-  else{
-
+  } else {
     return GestureDetector(
       onTap: () {
         if (imageUrl != null) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
+              return Dialog(
                 backgroundColor: Colors.transparent,
-                content: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  child: Image.network(
-                    imageUrl,
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    child: PhotoView(
+                      imageProvider: NetworkImage(imageUrl),
+                      backgroundDecoration: BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      minScale: PhotoViewComputedScale.contained,
+                      maxScale: PhotoViewComputedScale.covered * 2.0,
+                    ),
                   ),
                 ),
               );
@@ -33,6 +42,14 @@ Widget event_pics_builder(BuildContext context, String? imageUrl) {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38.withOpacity(0.3),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // смещение тени
+            ),
+          ],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -43,9 +60,5 @@ Widget event_pics_builder(BuildContext context, String? imageUrl) {
         ),
       ),
     );
-
   }
-
-
-
 }

@@ -22,6 +22,36 @@ String name = "";
 
 TextEditingController date = TextEditingController();
 
+// class ToggleSwitch extends StatefulWidget {
+//   @override
+//   _ToggleSwitchState createState() => _ToggleSwitchState();
+// }
+//
+// class _ToggleSwitchState extends State<ToggleSwitch> {
+  bool isSwitched = current_user.is_admin;
+//
+  Future<void> _toggleSwitch(bool value) async {
+
+      isSwitched = value;
+
+    await User().updateTheme(current_user, value);
+
+      current_user.is_admin = value; // или isSwitched вместо value, если так задумано
+  }
+
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Switch(
+//       value: current_user.is_admin,
+//       onChanged: _toggleSwitch,
+//       activeTrackColor: Colors.white,
+//       activeColor: Colors.deepPurpleAccent,
+//     );
+//   }
+// }
+
 @override
 Widget build(BuildContext context) {
   bool? isCheked = false;
@@ -37,7 +67,9 @@ class Edit_page extends StatefulWidget {
   const Edit_page({super.key});
 
   @override
+
   State<Edit_page> createState() => _Edit_pageState();
+  //_ToggleSwitchState createState() => _ToggleSwitchState();
 }
 
 class _Edit_pageState extends State<Edit_page> {
@@ -153,7 +185,7 @@ class _Edit_pageState extends State<Edit_page> {
                       child: Stack(children: <Widget>[
                         Center(
                             child: Container(
-                          child: buildAvatar(edit_avatar),
+                          child: buildAvatar(context, edit_avatar),
                           //padding: EdgeInsets.all(8),
                         )),
                         Center(
@@ -180,6 +212,17 @@ class _Edit_pageState extends State<Edit_page> {
                 SizedBox(
                   height: 30,
                 ),
+
+                Center(
+                  child:
+                  Switch(
+                    value: current_user.is_admin,
+                    onChanged: _toggleSwitch,
+                    activeTrackColor: Colors.white,
+                    activeColor: Colors.deepPurpleAccent,
+                  ),
+                ),
+
                 Card(
                   color: Color.fromARGB(200, 255, 255, 255),
                   child: TextField(
@@ -199,54 +242,6 @@ class _Edit_pageState extends State<Edit_page> {
                           color: Colors.blueGrey,
                           fontFamily: 'Oswald'),
                       contentPadding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                  height: 10,
-                ),
-
-                SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  color: Color.fromARGB(200, 255, 255, 255),
-                  child: TextButton(
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900, 1, 1),
-                        lastDate: DateTime.now(),
-                      ).then((value) {
-                        print("Selected date: $value");
-                        setState(() {
-                          birth_date = value!;
-                        });
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          'Дата     ',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.blueGrey,
-                            fontFamily: 'Oswald',
-                          ),
-                        ),
-                        Text(
-                          birth_date != null
-                              ? "${birth_date.day}/${birth_date.month}/${birth_date.year}"
-                              : "",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                            fontFamily: 'Oswald',
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                 ),
@@ -299,6 +294,34 @@ class _Edit_pageState extends State<Edit_page> {
                 SizedBox(
                   height: 10,
                 ),
+
+                Card(
+                  color: Color.fromARGB(200, 255, 255, 255),
+                  child: TextField(
+                    //keyboardType: TextInputType.emailAddress,
+                    // obscureText: true,
+                    controller: user_desc,
+                    decoration:
+                    //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
+                    InputDecoration(
+                      labelText: 'Описание профиля',
+                      labelStyle: TextStyle(
+                          fontSize: 17,
+                          color: Colors.blueGrey,
+                          fontFamily: 'Oswald'),
+                      contentPadding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                    ),
+                    onChanged: (String description) {
+                      user_description = description.trim();
+                    },
+                  ),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+
 
                 Card(
                   color: Color.fromARGB(200, 255, 255, 255),
@@ -536,10 +559,12 @@ class _Edit_pageState extends State<Edit_page> {
                       current_user.id,
                       user_name.text,
                       user_email.text,
+                      user_description,
                       user_password.text,
                       edit_avatar,
                     );
                     current_user.username = user_name.text;
+                    current_user.profile_description = user_description;
                     current_user.avatarUrl = edit_avatar;
                     Navigator.of(context).pop();
                   },

@@ -21,10 +21,10 @@ class Event with ChangeNotifier {
   List<Comment_class> _comments = [];
   List<Message_class> _messages = []; //лист сообщений
   List<User> _participants = [];
-
-  User get event_autor => _event_autor;
   String? _picURL1 = "";
   String? _picURL2 = "";
+
+  User get event_autor => _event_autor;
 
   String? get picURL1 => _picURL1;
 
@@ -108,12 +108,12 @@ class Event with ChangeNotifier {
 
   addComments(ids, comments) async {
     await usersCollection.doc(ids).update({"comments": comments});
-    print("shud");
+    print("comment_added");
   }
 
   addParticipants(ids, participants) async {
     await usersCollection.doc(ids).update({"participants": participants});
-    print("shud");
+    print("participant_added");
   }
 
   addMessages(ids, messages) async {
