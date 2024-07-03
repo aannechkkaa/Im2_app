@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'Users.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class Event_members {
@@ -82,12 +83,14 @@ class _Event_pageState extends State<Event_page> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Color.fromARGB(255, 50, 50, 50),
-            iconSize: 30,
-            onPressed: () => {
-              Navigator.push(context,
-                  PageTransition(type: PageTransitionType.fade, child: Home()))
+            icon: SvgPicture.asset(
+              'assets/arrow_left_b4qjl27buokr.svg',
+              width: 30,
+              height: 30,
+              color: Color.fromARGB(255, 50, 50, 50),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
             },
           ),
           backgroundColor: Color.fromARGB(255, 244, 244, 244),

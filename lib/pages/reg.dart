@@ -124,7 +124,7 @@ class Home_route_state extends State<Home_route> {
         appBar: AppBar(
           leading: IconButton(
             icon: SvgPicture.asset(
-              'assets/arrow_back.svg',
+              'assets/arrow_left_b4qjl27buokr.svg',
               width: 30,
               height: 30,
               color: Color.fromARGB(255, 50, 50, 50),
@@ -189,9 +189,9 @@ class Home_route_state extends State<Home_route> {
                                   },
                                   color: Color.fromARGB(255, 50, 50, 50),
                                   icon: SvgPicture.asset(
-                                    'assets/photo_camera.svg',
-                                    width: 20,
-                                    height: 20,
+                                    'assets/Camera_icon-icons.com_55948.svg',
+                                    width: 22,
+                                    height: 22,
                                     color: Color.fromARGB(255, 50, 50, 50),
                                   ),
                                   iconSize: 20,

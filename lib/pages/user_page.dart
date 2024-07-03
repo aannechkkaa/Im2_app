@@ -12,6 +12,7 @@ import 'package:im2/pages/edit_profile.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:im2/pages/Event.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'dart:html' as html;
 
@@ -63,15 +64,14 @@ class User_page extends State<User_p> {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Color.fromARGB(255, 50, 50, 50),
-            iconSize: 30,
-            onPressed: () => {
-              Navigator.pop(
-                  context,
-                  PageTransition(
-                      type: PageTransitionType.leftToRight, child: Home())
-              )
+            icon: SvgPicture.asset(
+              'assets/arrow_left_b4qjl27buokr.svg',
+              width: 30,
+              height: 30,
+              color: Color.fromARGB(255, 50, 50, 50),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
             },
           ),
           backgroundColor: Color.fromARGB(255, 244, 244, 244),

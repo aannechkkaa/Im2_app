@@ -11,6 +11,7 @@ import 'package:im2/pages/first_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 //import 'package:email_validator/email_validator.dart';
 import 'package:im2/pages/account.dart';
@@ -136,13 +137,16 @@ class _Edit_pageState extends State<Edit_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Color.fromARGB(255, 50, 50, 50),
-          iconSize: 30,
-          onPressed: () => {
-            Navigator.of(context).pop(),
+          icon: SvgPicture.asset(
+            'assets/arrow_left_b4qjl27buokr.svg',
+            width: 30,
+            height: 30,
+            color: Color.fromARGB(255, 50, 50, 50),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
           },
         ),
         backgroundColor: Color.fromARGB(255, 244, 244, 244),
