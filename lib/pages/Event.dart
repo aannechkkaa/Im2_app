@@ -596,8 +596,10 @@ class _Event_pageState extends State<Event_page> {
                                                   children: [
                                                     TextButton(
                                                         onPressed: () =>{
-                                                             //show_url_bttn = true,
-                                                             addUser(context)
+                                                            setState(() {
+                                                            show_url_bttn = true;
+                                                            }),
+                                                            addUser(context)
                                                           },
 
                                                         child:

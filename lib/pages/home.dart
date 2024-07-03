@@ -12,6 +12,8 @@ import 'package:im2/pages/add_event.dart';
 import 'package:im2/pages/mycalendar.dart';
 import 'package:im2/pages/Events.dart';
 
+bool show_url_bttn2 = false;
+String list_of = "Cобытия в городе";
 
 List<dynamic> costyl = [];
 int cotyl_index = 1;
@@ -43,8 +45,6 @@ class HomeState extends State<Home> {
   int Current_index = 0;
   bool not_first = false;
   bool _my_events = false;
-  bool show_url_bttn = false;
-  String list_of = "Cобытия в городе";
 
   @override
   void initState() {
@@ -65,8 +65,7 @@ class HomeState extends State<Home> {
     return Scaffold(
       //backgroundColor: Colors.green,
       appBar: appBar(),
-      //backgroundColor: Color.fromARGB(255, 255, 247, 225),
-      backgroundColor: Colors.green,
+      backgroundColor: Color.fromARGB(255, 255, 247, 225),
       body: Stack(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -313,13 +312,14 @@ class HomeState extends State<Home> {
                         ),
                         onPressed: () {
                           setState(() {
+                            list_of = "События в городе";
+                            show_url_bttn = false;
+                          });
+                          setState(() {
                             Event().getEvent().then((value) {
                               searchEvents.clear();
                               listEvents = value;
-                              setState(() {});
                               current_events = sort_events(events_add_page);
-                              show_url_bttn = false;
-                              list_of = "События в городе";
                             });
                           });
                         },
@@ -350,14 +350,23 @@ class HomeState extends State<Home> {
                           //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
                         ),
                         onPressed: () {
-                          searchEvents = listEvents.where((e) => e["participants"]["id"] == current_user.id).toList();
+
                           setState(() {
-                            current_events = current_events
-                                .where((event) =>
-                                event.participants.contains(current_user))
-                                .toList();
-                            show_url_bttn = true;
                             list_of = "Мой календарь";
+                          });
+
+                          setState(() {
+                            show_url_bttn = true;
+                          });
+
+                          setState(() {
+                            searchEvents = listEvents.where((event) {
+                              dynamic participants = event["participants"];
+                              if (participants is List<dynamic>) {
+                                return participants.any((participant) => participant["id"] == current_user.id);
+                              }
+                              return false;
+                            }).toList();
                           });
                         },
                         child: const Text(
@@ -786,40 +795,40 @@ class HomeState extends State<Home> {
                     const SizedBox(
                       height: 10,
                     ),
-                    // Visibility(
-                    //   visible: show_url_bttn,
-                    //   child: Row(
-                    //     children: [
-                    //       const SizedBox(
-                    //         width: 10,
-                    //       ),
-                    //       TextButton(
-                    //         onPressed: () {
-                    //           Navigator.push(
-                    //               context,
-                    //               MaterialPageRoute(
-                    //                   builder: (context) => Chat_p(
-                    //                         event: listEvent[index],
-                    //                       )));
-                    //         },
-                    //         style: ButtonStyle(
-                    //           shape: MaterialStateProperty.all(
-                    //               RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(5),
-                    //           )),
-                    //           backgroundColor: MaterialStateProperty.all(
-                    //               const Color.fromARGB(255, 251, 194, 235)),
-                    //           //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                    //         ),
-                    //         child: const Text("Перейти в чат участников",
-                    //             style: TextStyle(
-                    //                 fontSize: 17,
-                    //                 color: Color.fromARGB(255, 50, 50, 50),
-                    //                 fontFamily: 'Oswald')),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    Visibility(
+                      visible: show_url_bttn,
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Chat_p(
+                                            event: listEvent[index],
+                                          )));
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 251, 194, 235)),
+                              //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                            ),
+                            child: const Text("Перейти в чат участников",
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    color: Color.fromARGB(255, 50, 50, 50),
+                                    fontFamily: 'Oswald')),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     )
