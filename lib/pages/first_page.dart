@@ -7,7 +7,7 @@ import 'package:im2/pages/home.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:im2/pages/reg.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im2/pages/Users.dart';
 
 class First_p extends StatefulWidget {
@@ -102,16 +102,19 @@ class Reg_route_state extends State<Reg_route>{
                   user_email = user_name.trim();
                 });
               },
-              decoration:
-                  //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
-                  const InputDecoration(
-                icon: Icon(Icons.account_circle_outlined,
-                    size: 25, color: Color.fromARGB(255, 50, 50, 50)),
-                labelText: 'Логин',
+              decoration: InputDecoration(
+                icon: SvgPicture.asset(
+                  'assets/account_circle.svg',
+                  width: 25,
+                  height: 25,
+                  color: Color.fromARGB(255, 50, 50, 50),
+                ),
+                labelText: 'Email',
                 labelStyle: TextStyle(
-                    fontSize: 20,
-                    color: Color.fromARGB(255, 50, 50, 50),
-                    fontFamily: 'Oswald'),
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 50, 50, 50),
+                  fontFamily: 'Oswald',
+                ),
                 contentPadding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
               ),
             ),
@@ -129,14 +132,24 @@ class Reg_route_state extends State<Reg_route>{
                 user_password = password.trim();
               },
               decoration: InputDecoration(
-                icon: Icon(
-                  Icons.lock_outline,
-                  size: 25,
+                icon: SvgPicture.asset(
+                  'assets/lock_outline.svg',
+                  width: 25,
+                  height: 25,
                   color: Color.fromARGB(255, 50, 50, 50),
                 ),
                 suffix: IconButton(
-                  icon: Icon(
-                      _isObscured ? Icons.visibility_off : Icons.visibility),
+                  icon: _isObscured
+                      ? SvgPicture.asset(
+                    'assets/visibility_off.svg',
+                    width: 24,
+                    height: 24,
+                  )
+                      : SvgPicture.asset(
+                    'assets/visibility.svg',
+                    width: 24,
+                    height: 24,
+                  ),
                   onPressed: () {
                     setState(() {
                       _isObscured = !_isObscured;
