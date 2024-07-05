@@ -132,6 +132,7 @@ class _Edit_pageState extends State<Edit_page> {
     user_name.text = current_user.username;
     user_email.text = current_user.email;
     user_password.text = current_user.password;
+    user_desc.text = current_user.profile_description;
   }
 
   @override
@@ -195,22 +196,36 @@ class _Edit_pageState extends State<Edit_page> {
                         Center(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(165, 20, 0, 0),
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor:
-                                  Color.fromARGB(255, 163, 161, 225),
-                              child: IconButton(
-                                onPressed: () {
-                                  pickImage();
-                                },
-                                color: Color.fromARGB(255, 50, 50, 50),
-                                icon: SvgPicture.asset(
-                                  'assets/Camera_icon-icons.com_55948.svg',
-                                  width: 22,
-                                  height: 22,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black38.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 2), // смещение тени
+                                  ),
+                                ],
+                              ),
+                              child:
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor:
+                                Color.fromARGB(255, 163, 161, 225),
+                                child: IconButton(
+                                  onPressed: () {
+                                    pickImage();
+                                  },
                                   color: Color.fromARGB(255, 50, 50, 50),
+                                  icon: SvgPicture.asset(
+                                    'assets/Camera_icon-icons.com_55948.svg',
+                                    width: 22,
+                                    height: 22,
+                                    color: Color.fromARGB(255, 50, 50, 50),
+                                  ),
+                                  iconSize: 20,
                                 ),
-                                iconSize: 20,
                               ),
                             ),
                           ),
@@ -220,16 +235,6 @@ class _Edit_pageState extends State<Edit_page> {
 
                 SizedBox(
                   height: 30,
-                ),
-
-                Center(
-                  child:
-                  Switch(
-                    value: current_user.is_admin,
-                    onChanged: _toggleSwitch,
-                    activeTrackColor: Colors.white,
-                    activeColor: Colors.deepPurpleAccent,
-                  ),
                 ),
 
                 Card(
@@ -602,6 +607,7 @@ class _Edit_pageState extends State<Edit_page> {
                     ),
                   ),
                   style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(8.0),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),
@@ -634,6 +640,7 @@ class _Edit_pageState extends State<Edit_page> {
                     ),
                   ),
                   style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(8.0),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),

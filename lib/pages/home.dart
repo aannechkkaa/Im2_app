@@ -417,8 +417,8 @@ class HomeState extends State<Home> {
                   alignment: Alignment.center,
                   child: add_event()));
         },
-        child: SvgPicture.asset(
-          'assets/add_icon.svg',
+        child: Image.asset(
+          'assets/add2.png',
           // Укажите размер изображения
           width: 35,
           height: 35,
@@ -546,6 +546,7 @@ class HomeState extends State<Home> {
     return SizedBox(
       height: listEvents.length * 250,
       child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           itemCount:
               searchEvents.isEmpty ? listEvents.length : searchEvents.length,
           itemBuilder: (BuildContext context, int index) {
@@ -622,57 +623,6 @@ class HomeState extends State<Home> {
                                         ),
                                       ),
                                       SizedBox(height: 10),
-                                      // Row(
-                                      //   children: [
-                                      //     SizedBox(
-                                      //       width: 70,
-                                      //       child: Column(
-                                      //         children: [
-                                      //           Row(
-                                      //             children: [
-                                      //                Column(
-                                      //                 children: [
-                                      //                   Icon(Icons.place_outlined),
-                                      //                 ],
-                                      //               ),
-                                      //               Column(
-                                      //                 children: [
-                                      //                   Container(
-                                      //                     width: 40,
-                                      //                     child: Flexible(
-                                      //                       child: Text(
-                                      //                         listEvent[index]
-                                      //                             ["place"],
-                                      //                         softWrap: true,
-                                      //                         maxLines: 2,
-                                      //                         style:
-                                      //                             const TextStyle(fontSize: 15,
-                                      //                               fontFamily:
-                                      //                               'Oswald',
-                                      //                           color: Color.fromARGB(255, 248, 231, 174),
-                                      //                         ),
-                                      //                       ),
-                                      //                     ),
-                                      //                   )
-                                      //                 ],
-                                      //               )
-                                      //             ],
-                                      //           )
-                                      //
-                                      //           //Icon(Icons.place_outlined),
-                                      //
-                                      //           // Flexible
-                                      //           //   (child: new Text(Events_list[index].place,
-                                      //           //   style: TextStyle(
-                                      //           //     fontSize: 15,
-                                      //           //     fontFamily: 'Oswald',
-                                      //           //     color: Color.fromARGB(255, 154, 220, 184),),
-                                      //           //   overflow: TextOverflow.clip,),),
-                                      //         ],
-                                      //       ),
-                                      //     )
-                                      //   ],
-                                      // )
                                     ],
                                   ),
                                 ),
@@ -680,34 +630,7 @@ class HomeState extends State<Home> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.03,
                                 ),
-                                //  Column(
-                                //   mainAxisAlignment: MainAxisAlignment.center,
-                                //   crossAxisAlignment: CrossAxisAlignment.center,
-                                //   children: [
-                                //     Row(
-                                //       children: [
-                                //         SizedBox(
-                                //           height: 5,
-                                //           width: 1,
-                                //         )
-                                //       ],
-                                //     ),
-                                //     Row(
-                                //       children: [
-                                //         Image(
-                                //             image: AssetImage('assets/Vector_1.png')),
-                                //       ],
-                                //     ),
-                                //     Row(
-                                //       children: [
-                                //         SizedBox(
-                                //           height: 5,
-                                //           width: 1,
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ],
-                                // ),
+
                                 SizedBox(
                                  // width: 30
                                   width: MediaQuery.of(context).size.width * 0.03,
@@ -821,6 +744,7 @@ class HomeState extends State<Home> {
                                           )));
                             },
                             style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8.0),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),

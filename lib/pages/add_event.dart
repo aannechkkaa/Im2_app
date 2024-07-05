@@ -160,12 +160,20 @@ class _add_eventState extends State<add_event> {
                             width: 10,
                           ),
                           Container(
+
                             //width: 200,
                             height: 30,
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 163, 161, 225),
                               borderRadius: BorderRadius.circular(5),
-                              //color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black38.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 2), // изменяет положение тени
+                                ),
+                              ],
                             ),
                             child: DropdownButton<String>(
                               icon: Container(
@@ -460,6 +468,7 @@ class _add_eventState extends State<add_event> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
+                                  elevation: MaterialStateProperty.all(8.0),
                                   backgroundColor: MaterialStateProperty.all(
                                     Color.fromARGB(200, 255, 255, 255),
                                   ),
@@ -528,6 +537,7 @@ class _add_eventState extends State<add_event> {
                                           RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
                                       )),
+                                      elevation: MaterialStateProperty.all(8.0),
                                       backgroundColor:
                                           MaterialStateProperty.all(
                                               Color.fromARGB(
@@ -726,6 +736,7 @@ class _add_eventState extends State<add_event> {
                                 }
                               },
                               style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(8.0),
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
@@ -761,7 +772,20 @@ class _add_eventState extends State<add_event> {
                                       visible: del_1,
                                       child: Padding(
                                         padding: EdgeInsets.only(left: 180),
-                                        child: CircleAvatar(
+                                        child:
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black38.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                                offset: Offset(0, 2), // смещение тени
+                                              ),
+                                            ],
+                                          ),
+                                          child: CircleAvatar(
                                           backgroundColor: Colors.redAccent,
                                           radius: 20,
                                           child: IconButton(
@@ -776,7 +800,7 @@ class _add_eventState extends State<add_event> {
                                               height: 20.0,
                                               child: ClipOval(
                                                 child: Image.asset(
-                                                  'assets/delete_forever_20dp_323232.png',
+                                                  'assets/close_20dp_323232_FILL0_wght400_GRAD0_opsz20.png',
                                                   width: 20,
                                                   height: 20,
                                                   //fit: BoxFit.cover,
@@ -785,6 +809,7 @@ class _add_eventState extends State<add_event> {
                                             ),
                                           ),
                                         ),
+    ),
                                       )),
                                 ]),
                               ]),
@@ -879,6 +904,24 @@ class _add_eventState extends State<add_event> {
                 //     events_add_page[Event_index].participants, current_user.id);
                 // Event_index = e_index - 1;
                 setState(() {});
+
+                await Event().addEvent(
+                    e_name,
+                    event_type,
+                    s_description,
+                    l_description,
+                    e_place,
+                    e_Datetime,
+                    "${e_dateTime.hour}:${e_dateTime.minute}",
+                    event_chat_url,
+                    pic1Url,
+                    pic2Url,
+                    current_user);
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.fade,
+                        child: const Home()));
               } else {
                 showDialog(
                     context: context,
@@ -898,26 +941,10 @@ class _add_eventState extends State<add_event> {
                     });
               }
 
-              await Event().addEvent(
-                  e_name,
-                  event_type,
-                  s_description,
-                  l_description,
-                  e_place,
-                  e_Datetime,
-                  "${e_dateTime.hour}:${e_dateTime.minute}",
-                  event_chat_url,
-                  pic1Url,
-                  pic2Url,
-                  current_user);
-              Navigator.push(
-                  context,
-                  PageTransition(
-                      type: PageTransitionType.fade,
-                      child: const Home()));
+
             },
-            child: SvgPicture.asset(
-              'assets/add_icon_white.svg',
+            child: Image.asset(
+              'assets/add_white.png',
               // Укажите размер изображения
               width: 37,
               height: 37,

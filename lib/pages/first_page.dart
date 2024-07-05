@@ -161,7 +161,7 @@ class Reg_route_state extends State<Reg_route>{
                     fontSize: 20,
                     color: Color.fromARGB(255, 50, 50, 50),
                     fontFamily: 'Oswald'),
-                contentPadding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                contentPadding: EdgeInsets.fromLTRB(15.0, -10.0, 0.0, 0.0),
               ),
             ),
           ),
@@ -226,6 +226,7 @@ class Reg_route_state extends State<Reg_route>{
                   ),
                 ),
                 style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(8.0),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     )),
@@ -262,6 +263,7 @@ class Reg_route_state extends State<Reg_route>{
                   ),
                 ),
                 style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(8.0),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     )),

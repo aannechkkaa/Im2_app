@@ -289,8 +289,8 @@ class User_page extends State<User_p> {
                     alignment: Alignment.center,
                     child: add_event()));
           },
-          child: SvgPicture.asset(
-            'assets/add_icon.svg',
+          child: Image.asset(
+            'assets/add2.png',
             // Укажите размер изображения
             width: 35,
             height: 35,
@@ -395,6 +395,7 @@ class User_page extends State<User_p> {
     return SizedBox(
       height: listEvents.length * 250,
       child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           itemCount: listEvents.length,
           itemBuilder: (BuildContext context, int index) {
             return SizedBox(
