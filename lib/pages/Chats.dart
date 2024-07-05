@@ -436,6 +436,9 @@ class _Chat_page extends State<Chat_p> {
                         // SizedBox(width: 3,),
                         Column(
                           children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
                             IconButton(
                                 onPressed: () {
                                   if ((message_txt == "") ||
@@ -480,11 +483,16 @@ class _Chat_page extends State<Chat_p> {
                                     });
                                   }
                                 },
-                                icon: Icon(
-                                  color: Color.fromARGB(255, 74, 68, 134),
-                                  Icons.arrow_circle_right_rounded,
-                                  size: 35,
-                                ))
+                              icon: Container(
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/arrow_circle_right_50dp_4A4486.png',
+                                    width: 50,
+                                    height: 50,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),),
                             // SizedBox(
                             //    width: 25,
                             //    height: 25,

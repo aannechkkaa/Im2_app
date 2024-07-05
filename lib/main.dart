@@ -40,12 +40,12 @@ class MyApp extends StatelessWidget {
         '/chat_page': (context) => const Chat_p(),
       },
       theme: ThemeData(
-        primaryColor: Colors.cyan,
+        primaryColor: Color.fromARGB(255, 50, 50, 50),
         brightness: Brightness.light, // Светлая тема
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark, // Темная тема
-        primaryColor: Colors.cyan,
+        primaryColor: Color.fromARGB(255, 50, 50, 50),
         // Настройка других параметров для темной темы
       ),
       themeMode: ThemeMode.dark, // Автоматический выбор темы в зависимости от настроек системы

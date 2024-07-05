@@ -57,7 +57,7 @@ TextEditingController date = TextEditingController();
 Widget build(BuildContext context) {
   bool? isCheked = false;
   return MaterialApp(
-    theme: ThemeData(primaryColor: Colors.green),
+    theme: ThemeData(primaryColor: Color.fromARGB(255, 244, 244, 244)),
     //home: Home_route(),
     //routes: {Home.routeName: (_)=> Home()},
   );
@@ -203,8 +203,13 @@ class _Edit_pageState extends State<Edit_page> {
                                 onPressed: () {
                                   pickImage();
                                 },
-                                color: Colors.white,
-                                icon: Icon(Icons.camera_alt_outlined),
+                                color: Color.fromARGB(255, 50, 50, 50),
+                                icon: SvgPicture.asset(
+                                  'assets/Camera_icon-icons.com_55948.svg',
+                                  width: 22,
+                                  height: 22,
+                                  color: Color.fromARGB(255, 50, 50, 50),
+                                ),
                                 iconSize: 20,
                               ),
                             ),
@@ -337,9 +342,17 @@ class _Edit_pageState extends State<Edit_page> {
                     },
                     decoration: InputDecoration(
                       suffix: IconButton(
-                        icon: Icon(_isObscured
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                        icon: _isObscured
+                            ? SvgPicture.asset(
+                          'assets/visibility_off.svg',
+                          width: 24,
+                          height: 24,
+                        )
+                            : SvgPicture.asset(
+                          'assets/visibility.svg',
+                          width: 24,
+                          height: 24,
+                        ),
                         onPressed: () {
                           setState(() {
                             _isObscured = !_isObscured;
@@ -370,16 +383,24 @@ class _Edit_pageState extends State<Edit_page> {
                     decoration:
                         //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                         InputDecoration(
-                      suffix: IconButton(
-                        icon: Icon(_isObscured2
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _isObscured2 = !_isObscured2;
-                          });
-                        },
-                      ),
+                          suffix: IconButton(
+                            icon: _isObscured
+                                ? SvgPicture.asset(
+                              'assets/visibility_off.svg',
+                              width: 24,
+                              height: 24,
+                            )
+                                : SvgPicture.asset(
+                              'assets/visibility.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscured = !_isObscured;
+                              });
+                            },
+                          ),
                       labelText: 'Подтверждение пароля',
                       labelStyle: TextStyle(
                           fontSize: 17,

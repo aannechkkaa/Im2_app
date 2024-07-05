@@ -18,6 +18,7 @@ import 'dart:html' as html;
 
 import 'Chats.dart';
 import 'MyWidgets/home_pics.dart';
+import 'account.dart';
 
 class User_p extends StatefulWidget {
 
@@ -60,7 +61,7 @@ class User_page extends State<User_p> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.green),
+      theme: ThemeData(primaryColor: Color.fromARGB(255, 244, 244, 244)),
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -317,11 +318,19 @@ class User_page extends State<User_p> {
                                           type: PageTransitionType.fade,
                                           child: Home()));
                                 }),
-                                icon: const Icon(
-                                  Icons.map_outlined,
-                                  color: Color.fromARGB(255, 50, 50, 50),
-                                  size: 25,
-                                )),
+                              icon: Container(
+                                width: 150.0,
+                                height: 150.0,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/map_grey.png',
+                                    width: 20,
+                                    height: 20,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
                             const Text(
                               'Обзор',
                               style: TextStyle(
@@ -336,7 +345,11 @@ class User_page extends State<User_p> {
                           children: [
                             IconButton(
                               onPressed: (() {
-                                //Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: Reg_p()));
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.fade,
+                                        child: Reg_p()));
                               }),
                               icon: Container(
                                 width: 150.0,
@@ -346,7 +359,7 @@ class User_page extends State<User_p> {
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(50.0)),
                                   border: Border.all(
-                                    color: Color.fromARGB(255, 74, 68, 134),
+                                    color: Color.fromARGB(255, 50, 50, 50),
                                     width: 1.7,
                                   ),
                                 ),
@@ -365,7 +378,7 @@ class User_page extends State<User_p> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'Oswald',
-                                color: Color.fromARGB(255, 74, 68, 134),
+                                color: Color.fromARGB(255, 50, 50, 50),
                               ),
                             )
                           ],

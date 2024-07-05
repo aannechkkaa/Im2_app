@@ -22,7 +22,7 @@ class First_page extends State<First_p> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.green),
+      theme: ThemeData(primaryColor: Color.fromARGB(255, 244, 244, 244)),
       home: Reg_route(),
       routes: {Reg_p.routeName: (_) => Reg_p()},
     );

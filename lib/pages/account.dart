@@ -78,7 +78,7 @@ class Reg_page extends State<Reg_p> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.green),
+      theme: ThemeData(primaryColor: Color.fromARGB(255, 244, 244, 244)),
       home: Scaffold(
         appBar: AppBar(
           actions: [
@@ -89,9 +89,17 @@ class Reg_page extends State<Reg_p> {
                     PageTransition(
                         type: PageTransitionType.fade, child: Edit_page()));
               },
-              icon: Icon(
-                Icons.settings,
-                color: Color.fromARGB(255, 50, 50, 50),
+              icon:Container(
+                width: 35.0,
+                height: 35.0,
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/settings_35dp_323232.png',
+                    width: 35,
+                    height: 35,
+                    //fit: BoxFit.cover,
+                  ),
+                ),
               ),
               iconSize: 35,
             )
@@ -352,11 +360,20 @@ class Reg_page extends State<Reg_p> {
                                           type: PageTransitionType.fade,
                                           child: Home()));
                                 }),
-                                icon: const Icon(
-                                  Icons.map_outlined,
-                                  color: Color.fromARGB(255, 50, 50, 50),
-                                  size: 25,
-                                )),
+                              icon: Container(
+                                width: 150.0,
+                                height: 150.0,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/map_grey.png',
+                                    width: 20,
+                                    height: 20,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+
+                            ),
                             const Text(
                               'Обзор',
                               style: TextStyle(

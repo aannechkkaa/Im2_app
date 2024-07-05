@@ -442,10 +442,19 @@ class HomeState extends State<Home> {
                               onPressed: (() {
                                 //Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: Home()));
                               }),
-                              icon: const Icon(
-                                Icons.map_outlined,
-                                color: Color.fromARGB(255, 74, 68, 134),
-                              )),
+                              icon: Container(
+                                width: 150.0,
+                                height: 150.0,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/map_20dp.png',
+                                    width: 20,
+                                    height: 20,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                          ),
                           const Text(
                             'Обзор',
                             style: TextStyle(

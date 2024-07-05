@@ -15,6 +15,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:email_validator/email_validator.dart';
+import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:time_picker_spinner/time_picker_spinner.dart';
 
 import 'dart:html' as html;
 
@@ -109,7 +114,7 @@ class _add_eventState extends State<add_event> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: Colors.green,
+          primaryColor: Color.fromARGB(255, 244, 244, 244),
           //dialogTheme: Colors.green,
         ),
         //color: Colors.white,
@@ -163,9 +168,17 @@ class _add_eventState extends State<add_event> {
                               //color: Colors.white,
                             ),
                             child: DropdownButton<String>(
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Color.fromARGB(255, 50, 50, 50),
+                              icon: Container(
+                                width: 26.0,
+                                height: 26.0,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/arrow_drop_down_26dp_323232.png',
+                                    width: 26,
+                                    height: 26,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                               iconSize: 26,
                               iconEnabledColor: Colors.white,
@@ -368,17 +381,78 @@ class _add_eventState extends State<add_event> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  showDatePicker(
-                                    context: context,
+                                  // // showDatePicker(
+                                  // //   context: context,
+                                  // //   initialDate: DateTime.now(),
+                                  // //   firstDate: DateTime.now(),
+                                  // //   lastDate: DateTime(2025),
+                                  // // ).then((value) {
+                                  // //   print("Selected date: $value");
+                                  // //   setState(() {
+                                  // //     e_Datetime = value!;
+                                  // //   });
+                                  // // });
+                                  // DatePicker.showSimpleDatePicker(
+                                  //   context,
+                                  //    initialDate: DateTime.now(),
+                                  //   firstDate: DateTime.now(),
+                                  //   lastDate: DateTime(2025),
+                                  //   dateFormat: "dd-MMMM-yyyy",
+                                  //   locale: DateTimePickerLocale.ru,
+                                  //   looping: true,
+                                  //   onChanged: (selectedDate) {
+                                  //     print("Selected date: $selectedDate");
+                                  //     // Можно выполнить какие-то действия при изменении даты
+                                  //   },
+                                  //   onConfirm: (selectedDate) {
+                                  //     setState(() {
+                                  //       e_Datetime = selectedDate;
+                                  //     });
+                                  //     print("Confirmed date: $selectedDate");
+                                  //   },
+                                  // );
+                                  DatePicker.showSimpleDatePicker(
+                                    context,
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime.now(),
                                     lastDate: DateTime(2025),
-                                  ).then((value) {
-                                    print("Selected date: $value");
-                                    setState(() {
-                                      e_Datetime = value!;
-                                    });
+                                    dateFormat: "dd-MMMM-yyyy",
+                                    locale: DateTimePickerLocale.ru,
+                                    titleText: "Выберите дату",
+                                    cancelText: "Закрыть",
+                                    looping: true,
+                                  ).then((pickedDate) {
+                                    if (pickedDate != null) {
+                                      setState(() {
+                                        e_Datetime = pickedDate;
+                                      });
+                                      print("Selected date: $pickedDate");
+                                    }
                                   });
+
+                                  // TimePickerSpinnerPopUp(
+                                  //   mode: CupertinoDatePickerMode.date,
+                                  //   initTime: DateTime.now(),
+                                  //   minTime: DateTime.now(),
+                                  //   maxTime: DateTime(2025),
+                                  //   barrierColor: Colors.black12, //Barrier Color when pop up show
+                                  //   minuteInterval: 1,
+                                  //   padding : const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                                  //   cancelText : 'Закрыть',
+                                  //   confirmText : 'OK',
+                                  //   pressType: PressType.singlePress,
+                                  //   timeFormat: 'dd/MM/yyyy',
+                                  //   // Customize your time widget
+                                  //   // timeWidgetBuilder: (dateTime) {},
+                                  //   onChange: (dateTime) {
+                                  //     if (dateTime != null) {
+                                  //       setState(() {
+                                  //         e_Datetime = dateTime;
+                                  //       });
+                                  //       print("Selected date: $dateTime");
+                                  //     }
+                                  //   },
+                                  // );
                                 },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all(
@@ -432,15 +506,23 @@ class _add_eventState extends State<add_event> {
                                   TextButton(
                                     onPressed: () {
                                       showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay.now())
-                                          .then((value) {
-                                        //print("Selected date: $value");
-                                        setState(() {
-                                          e_dateTime = value!;
-                                        });
+                                        initialEntryMode: TimePickerEntryMode.input,
+                                        cancelText: "Закрыть",
+                                        //helpText: Text("fgh"),
+                                        hourLabelText: "часов",
+                                        minuteLabelText: "минут",
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                      ).then((value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            e_dateTime = value;
+                                          });
+                                          print("Selected time: $value");
+                                        }
                                       });
                                     },
+
                                     style: ButtonStyle(
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
@@ -472,7 +554,33 @@ class _add_eventState extends State<add_event> {
                                       ],
                                     ),
                                   ),
+                                  // IntrinsicWidth(
+                                  //   child: TimePickerSpinnerPopUp(
+                                  //     mode: CupertinoDatePickerMode.dateAndTime,
+                                  //     initTime: DateTime.now(),
+                                  //     minTime: DateTime.now().subtract(Duration(days: 1)),
+                                  //     maxTime: DateTime.now().add(Duration(days: 1)),
+                                  //     barrierColor: Colors.black.withOpacity(0.5),
+                                  //     minuteInterval: 1,
+                                  //     padding: EdgeInsets.all(12),
+                                  //     cancelText: 'Отмена',
+                                  //     confirmText: 'Выбрать',
+                                  //     pressType: PressType.singlePress,
+                                  //     timeFormat: 'dd/MM/yyyy HH:mm',
+                                  //     onChange: (dateTime) {
+                                  //       if (dateTime != null) {
+                                  //         setState(() {
+                                  //           e_Datetime = dateTime;
+                                  //         });
+                                  //         print("Выбранная дата и время: $dateTime");
+                                  //       }
+                                  //     },
+                                  //   ),
+                                  // )
+
                                 ],
+
+
                               ),
                               // Column(
                               //   children: [
@@ -491,63 +599,63 @@ class _add_eventState extends State<add_event> {
                           ),
                         ],
                       ),
+                      // SizedBox(
+                      //   height: 25,
+                      // ),
+                      // Row(
+                      //     //mainAxisAlignment: MainAxisAlignment,
+                      //     children: [
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       TextButton(
+                      //         onPressed: () {
+                      //           openUrlInBrowser(Uri.parse(create_bot_link));
+                      //         },
+                      //         style: ButtonStyle(
+                      //           shape: MaterialStateProperty.all(
+                      //               RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(5),
+                      //           )),
+                      //           backgroundColor: MaterialStateProperty.all(
+                      //             Color.fromARGB(255, 163, 161, 225),
+                      //           ),
+                      //           //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                      //         ),
+                      //         child: const Text("Создать чат участников",
+                      //             style: TextStyle(
+                      //                 fontSize: 17,
+                      //                 color: Color.fromARGB(255, 50, 50, 50),
+                      //                 fontFamily: 'Oswald')),
+                      //       ),
+                      //       // 15
+                      //     ]),
                       SizedBox(
                         height: 25,
                       ),
-                      Row(
-                          //mainAxisAlignment: MainAxisAlignment,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                openUrlInBrowser(Uri.parse(create_bot_link));
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                )),
-                                backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 163, 161, 225),
-                                ),
-                                //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                              ),
-                              child: const Text("Создать чат участников",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Color.fromARGB(255, 50, 50, 50),
-                                      fontFamily: 'Oswald')),
-                            ),
-                            // 15
-                          ]),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Card(
-                        color: Color.fromARGB(200, 255, 255, 255),
-                        child: TextField(
-                          //controller: _controller,
-                          // obscureText: true,
-                          maxLength: 100,
-                          maxLines: 1,
-                          decoration:
-                              //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
-                              InputDecoration(
-                            labelText: 'Вставьте ссылку на чат участников',
-                            labelStyle: TextStyle(
-                                fontSize: 17,
-                                color: Colors.blueGrey,
-                                fontFamily: 'Oswald'),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                          ),
-                          onChanged: (String url) {
-                            event_chat_url = url.trim();
-                          },
-                        ),
-                      ),
+                      // Card(
+                      //   color: Color.fromARGB(200, 255, 255, 255),
+                      //   child: TextField(
+                      //     //controller: _controller,
+                      //     // obscureText: true,
+                      //     maxLength: 100,
+                      //     maxLines: 1,
+                      //     decoration:
+                      //         //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
+                      //         InputDecoration(
+                      //       labelText: 'Вставьте ссылку на чат участников',
+                      //       labelStyle: TextStyle(
+                      //           fontSize: 17,
+                      //           color: Colors.blueGrey,
+                      //           fontFamily: 'Oswald'),
+                      //       contentPadding:
+                      //           EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                      //     ),
+                      //     onChanged: (String url) {
+                      //       event_chat_url = url.trim();
+                      //     },
+                      //   ),
+                      // ),
                       // WebView(
                       //   initialUrl: 'https://flutter.dev',
                       //   navigationDelegate: (NavigationRequest request){
@@ -663,10 +771,17 @@ class _add_eventState extends State<add_event> {
                                                 del_1 = false;
                                               });
                                             },
-                                            icon: Icon(
-                                              Icons.delete_forever,
-                                              color: Colors.white,
-                                              size: 20,
+                                            icon: Container(
+                                              width: 20.0,
+                                              height: 20.0,
+                                              child: ClipOval(
+                                                child: Image.asset(
+                                                  'assets/delete_forever_20dp_323232.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                  //fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -830,11 +945,19 @@ class _add_eventState extends State<add_event> {
                                             type: PageTransitionType.fade,
                                             child: Home()));
                                   }),
-                                  icon: const Icon(
-                                    Icons.map_outlined,
-                                    color: Color.fromARGB(255, 50, 50, 50),
-                                    size: 25,
-                                  )),
+                                icon: Container(
+                                  width: 150.0,
+                                  height: 150.0,
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/map_grey.png',
+                                      width: 20,
+                                      height: 20,
+                                      //fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               const Text(
                                 'Обзор',
                                 style: TextStyle(

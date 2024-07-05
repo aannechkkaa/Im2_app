@@ -232,11 +232,17 @@ class _Event_pageState extends State<Event_page> {
                                                   mainAxisSize: MainAxisSize.max,
                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
-                                                    const Icon(
-                                                      //Icons.border_color_outlined
-                                                      Icons.place_outlined,
-                                                      color: Color.fromARGB(
-                                                          255, 74, 68, 134),
+                                                    Container(
+                                                      width: 24.0,
+                                                      height: 24.0,
+                                                      child: ClipOval(
+                                                        child: Image.asset(
+                                                          'assets/place_24dp.png',
+                                                          width: 24,
+                                                          height: 24,
+                                                          //fit: BoxFit.cover,
+                                                        ),
+                                                      ),
                                                     ),
                                                     Text(
                                                       widget.event["place"],
@@ -975,6 +981,9 @@ class _Event_pageState extends State<Event_page> {
                         // SizedBox(width: 3,),
                         Column(
                           children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
                             IconButton(
                                 onPressed: () {
                                   if ((comment_txt == "") ||
@@ -1021,10 +1030,15 @@ class _Event_pageState extends State<Event_page> {
                                     });
                                   }
                                 },
-                              icon:  Icon(
-                                Icons.arrow_circle_right_outlined,
-                                color: Color.fromARGB(255, 74, 68, 134),
-                                size: 35,
+                              icon: Container(
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/arrow_circle_right_50dp_4A4486.png',
+                                    width: 50,
+                                    height: 50,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),),
                             // SizedBox(
                             //    width: 25,
