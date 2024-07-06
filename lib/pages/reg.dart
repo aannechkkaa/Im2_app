@@ -17,6 +17,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:file_picker/file_picker.dart';
 //import 'package:email_validator/email_validator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'dart:html' as html;
 
@@ -99,6 +102,10 @@ class Home_route_state extends State<Home_route> {
     TaskSnapshot uploadTask =
         await reference.putData(await image!.readAsBytes());
     var url = await uploadTask.ref.getDownloadURL();
+    if(url == null){
+     /// url = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small_2x/default-avatar-icon-of-social-media-user-vector.jpg";
+      ///
+    };
     print(url);
     setState(() {
       this.avatarUrl = url;
@@ -150,16 +157,19 @@ class Home_route_state extends State<Home_route> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 30,
-              ),
+
               Image.asset(
-                'assets/bg_img.png',
+                'assets/Vector6.png',
                 // Укажите размер изображения
                 width: MediaQuery.of(context).size.width * 1,
                 //height: MediaQuery.of(context).size.height * 1,
                 fit: BoxFit.fill,
               ),
+              // SvgPicture.asset(
+              //   'assets/Vector5.svg',
+              //   width: MediaQuery.of(context).size.width * 1,
+              //   fit: BoxFit.fill,
+              // ),
             ],
           ),
           ListView(
@@ -251,19 +261,48 @@ class Home_route_state extends State<Home_route> {
                   Card(
                     color: Color.fromARGB(200, 255, 255, 255),
                     child: TextButton(
+
                       onPressed: () {
-                        showDatePicker(
-                          context: context,
+
+                        DatePicker.showSimpleDatePicker(
+                          context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(1900, 1, 1),
+                          firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
-                        ).then((value) {
-                          print("Selected date: $value");
-                          setState(() {
-                            birth_date = value!;
-                          });
+                          dateFormat: "dd-MMMM-yyyy",
+                          locale: DateTimePickerLocale.ru,
+                          titleText: "Выберите дату",
+                          cancelText: "Закрыть",
+                          looping: true,
+                        ).then((pickedDate) {
+                          if (pickedDate != null) {
+                            setState(() {
+                              birth_date = pickedDate;
+                            });
+                            print("Selected date: $pickedDate");
+                          }
                         });
+
+                        // showDatePicker(
+                        //   context: context,
+                        //   initialDate: DateTime.now(),
+                        //   firstDate: DateTime(1900, 1, 1),
+                        //   lastDate: DateTime.now(),
+                        // ).then((value) {
+                        //   print("Selected date: $value");
+                        //   setState(() {
+                        //     birth_date = value!;
+                        //   });
+                        // });
                       },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(15.0, 20.0, 0.0, 20.0)), // Пример отступа в 10.0 единиц
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
                       child: Row(
                         children: [
                           Text(
@@ -320,12 +359,12 @@ class Home_route_state extends State<Home_route> {
                   Card(
                     color: Color.fromARGB(200, 255, 255, 255),
                     child: TextField(
-                      keyboardType: TextInputType.emailAddress,
+                      //keyboardType: TextInputType.emailAddress,
                       // obscureText: true,
                       decoration:
                           //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                           InputDecoration(
-                        labelText: 'Почта',
+                        labelText: 'Логин',
                         labelStyle: TextStyle(
                             fontSize: 17,
                             color: Colors.blueGrey,
@@ -391,7 +430,7 @@ class Home_route_state extends State<Home_route> {
                           //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                           InputDecoration(
                             suffix: IconButton(
-                              icon: _isObscured
+                              icon: _isObscured2
                                   ? SvgPicture.asset(
                                 'assets/visibility_off.svg',
                                 width: 24,
@@ -404,7 +443,7 @@ class Home_route_state extends State<Home_route> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _isObscured = !_isObscured;
+                                  _isObscured2 = !_isObscured2;
                                 });
                               },
                             ),
@@ -425,7 +464,7 @@ class Home_route_state extends State<Home_route> {
                     onPressed: () async {
                       if ((user_name_reg == "") ||
                           (user_password == "") ||
-                          (avatarUrl == "") ||
+                          (avatarUrl == null) ||
                           (user_description == "") ||
                           (user_email == "") ||
                           (check_password == "")) {
@@ -506,11 +545,14 @@ class Home_route_state extends State<Home_route> {
                             user_description,
                             user_email,
                             false);
+                        //print(avatarUrl);
+
                         Navigator.push(
                             context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: Home()));
+                            new MaterialPageRoute(
+                                builder: (context) => new Home()));
+
+
                       }
                     },
                     style: ButtonStyle(

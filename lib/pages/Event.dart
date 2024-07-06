@@ -110,11 +110,9 @@ class _Event_pageState extends State<Event_page> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 30,
-              ),
+
               Image.asset(
-                'assets/bg_img.png',
+                'assets/Vector6.png',
                 // Укажите размер изображения
                 width: MediaQuery.of(context).size.width * 1,
                 //height: MediaQuery.of(context).size.height * 1,
@@ -123,6 +121,7 @@ class _Event_pageState extends State<Event_page> {
             ],
           ),
           ListView(
+            padding: EdgeInsets.only(bottom: 20.0),
             children: [
               Column(children: [
                 SizedBox(height: 25,),

@@ -140,7 +140,7 @@ class _add_eventState extends State<add_event> {
                   height: 30,
                 ),
                 Image.asset(
-                  'assets/bg_img.png',
+                  'assets/Vector6.png',
                   // Укажите размер изображения
                   width: MediaQuery.of(context).size.width * 1,
                   //height: MediaQuery.of(context).size.height * 1,

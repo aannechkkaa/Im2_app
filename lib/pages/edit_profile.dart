@@ -167,11 +167,11 @@ class _Edit_pageState extends State<Edit_page> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 30,
-            ),
+            // SizedBox(
+            //   height: 30,
+            // ),
             Image.asset(
-              'assets/bg_img.png',
+              'assets/Vector6.png',
               // Укажите размер изображения
               width: MediaQuery.of(context).size.width * 1,
               //height: MediaQuery.of(context).size.height * 1,
@@ -241,6 +241,7 @@ class _Edit_pageState extends State<Edit_page> {
                   color: Color.fromARGB(200, 255, 255, 255),
                   child: TextField(
                     controller: user_name,
+                    maxLength: 28,
                     onChanged: (String user_name) {
                       setState(() {
                         user_name_edit = user_name.trim();
@@ -286,13 +287,13 @@ class _Edit_pageState extends State<Edit_page> {
                 Card(
                   color: Color.fromARGB(200, 255, 255, 255),
                   child: TextField(
-                    keyboardType: TextInputType.emailAddress,
+                    //keyboardType: TextInputType.emailAddress,
                     // obscureText: true,
                     controller: user_email,
                     decoration:
                         //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                         InputDecoration(
-                      labelText: 'Почта',
+                      labelText: 'Логин',
                       labelStyle: TextStyle(
                           fontSize: 17,
                           color: Colors.blueGrey,
@@ -315,6 +316,7 @@ class _Edit_pageState extends State<Edit_page> {
                     //keyboardType: TextInputType.emailAddress,
                     // obscureText: true,
                     controller: user_desc,
+                    maxLength: 270,
                     decoration:
                     //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                     InputDecoration(
@@ -340,7 +342,7 @@ class _Edit_pageState extends State<Edit_page> {
                 Card(
                   color: Color.fromARGB(200, 255, 255, 255),
                   child: TextField(
-                    controller: user_password,
+                    //controller: user_password,
                     obscureText: _isObscured,
                     onChanged: (String password) {
                       user_password_edit = password.trim();
@@ -389,7 +391,7 @@ class _Edit_pageState extends State<Edit_page> {
                         //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
                         InputDecoration(
                           suffix: IconButton(
-                            icon: _isObscured
+                            icon: _isObscured2
                                 ? SvgPicture.asset(
                               'assets/visibility_off.svg',
                               width: 24,
@@ -402,7 +404,7 @@ class _Edit_pageState extends State<Edit_page> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _isObscured = !_isObscured;
+                                _isObscured2 = !_isObscured2;
                               });
                             },
                           ),
@@ -456,6 +458,7 @@ class _Edit_pageState extends State<Edit_page> {
                     if ((user_password_edit != "") &&
                         (user_password_edit.trim().isNotEmpty)) {
                       if (user_password_edit != check_password) {
+                        //user_password_edit = current_user.password;
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -470,39 +473,35 @@ class _Edit_pageState extends State<Edit_page> {
                                 ),
                               );
                             });
-                      } else if (!isValidPassword(user_password_edit)) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                  "Ваш пароль не соответствует правилам",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'Oswald',
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                content: Text(
-                                    "Ваш пароль должен состоять только из символов латинского алфавита, цифп и символов @, # и !. Также длина пароля не должна быть меньше 7 символов."),
-                              );
-                            });
-                      } else {
-                        // Users[(findUserByLoginAndPassword(
-                        //     Users,
-                        //     current_user.email,
-                        //     current_user.password)!
-                        //     .id) -
-                        //     1]
-                        //     .updatePassword(user_password_edit.trim());
-                        // current_user.updatePassword(user_password_edit.trim());
-                        //
-                        // Navigator.push(
-                        //     context,
-                        //     PageTransition(
-                        //         type: PageTransitionType.fade, child: Reg_p()));
+                        await User().updateDatanopass(
+                          current_user.id,
+                          user_name.text,
+                          user_email.text,
+                          user_description,
+                          user_password_edit,
+                          edit_avatar,
+                        );
                       }
+                      else{
+                        await User().updateData(
+                          current_user.id,
+                          user_name.text,
+                          user_email.text,
+                          user_description,
+                          user_password_edit,
+                          edit_avatar,
+                        );
+                      }
+
                     }
+                    await User().updateDatanopass(
+                      current_user.id,
+                      user_name.text,
+                      user_email.text,
+                      user_description,
+                      user_password_edit,
+                      edit_avatar,
+                    );
 
                     // if ((user_email_edit != "") ||
                     //     (user_email_edit
@@ -585,17 +584,13 @@ class _Edit_pageState extends State<Edit_page> {
                     //   Users.last.register(user_name_reg, user_password, avatarUrl, (DateTime.now().difference(birth_date).inDays / 365).floor() , Users.length, user_description, user_email);
                     //   Navigator.of(context).pushNamed(Home.routeName);
                     // }
-                    await User().updateData(
-                      current_user.id,
-                      user_name.text,
-                      user_email.text,
-                      user_description,
-                      user_password.text,
-                      edit_avatar,
-                    );
-                    current_user.username = user_name.text;
-                    current_user.profile_description = user_description;
-                    current_user.avatarUrl = edit_avatar;
+                    setState(() {
+                      current_user.username = user_name.text;
+                      current_user.profile_description = user_description;
+                      current_user.avatarUrl = edit_avatar;
+                    });
+
+                    //current_user.
                     Navigator.of(context).pop();
                   },
                   child: Text(

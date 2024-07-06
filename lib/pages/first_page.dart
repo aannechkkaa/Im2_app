@@ -109,7 +109,7 @@ class Reg_route_state extends State<Reg_route>{
                   height: 25,
                   color: Color.fromARGB(255, 50, 50, 50),
                 ),
-                labelText: 'Email',
+                labelText: 'Логин',
                 labelStyle: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(255, 50, 50, 50),
@@ -199,23 +199,14 @@ class Reg_route_state extends State<Reg_route>{
               ),
               TextButton(
                 onPressed: () async {
-                  if (findUserByLoginAndPassword(
-                          Users, user_email, user_password) ==
-                      null) {
-                    await User().login(user_email, user_password);
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            child: Home()));
-                  } else {
-                    current_user = findUserByLoginAndPassword(
-                        Users, user_email, user_password)!;
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new Home()));
-                  }
+
+                    await User().login(context, user_email, user_password);
+                    // Navigator.push(
+                    //     context,
+                    //     PageTransition(
+                    //         type: PageTransitionType.rightToLeft,
+                    //         child: Home()));
+
                 },
                 child: Text(
                   'Войти',
@@ -249,10 +240,11 @@ class Reg_route_state extends State<Reg_route>{
               ),
               TextButton(
                 onPressed: () {
+
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new Home_route()));
+                          builder: (context) => new Home()));
                 },
                 child: Text(
                   'Зарегестрироваться',

@@ -14,6 +14,7 @@ import 'package:im2/pages/Events.dart';
 
 bool show_url_bttn2 = false;
 String list_of = "Cобытия в городе";
+bool myMode = false;
 
 List<dynamic> costyl = [];
 int cotyl_index = 1;
@@ -22,6 +23,8 @@ List<Event> sort_events(List<Event> events) {
   //events.sort((a, b) => a.Time.compareTo(b.Time));
   return events;
 }
+bool userHasEvents = true;
+bool thereAreEvents = true;
 
 
 class Home extends StatefulWidget {
@@ -39,6 +42,7 @@ class HomeState extends State<Home> {
   List<Event> filteredEvents = [];
   List<dynamic> listEvents = [];
   List<dynamic> searchEvents = [];
+  List<dynamic> myEvents = [];
 
   //Event e1 = new Event();
   int Count = 0;
@@ -71,11 +75,8 @@ class HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 30,
-            ),
             Image.asset(
-              'assets/bg_img.png',
+              'assets/Vector6.png',
               // Укажите размер изображения
               width: MediaQuery.of(context).size.width * 1,
               //height: MediaQuery.of(context).size.height * 1,
@@ -118,18 +119,21 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        if(listEvents.where((e) => e["category"] == "Активный отдых").toList().length == 0){
-                          searchEvents == 0;
-                        }
-                        else{
+
                           searchEvents = listEvents
                               .where((e) => e["category"] == "Активный отдых")
                               .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Активный отдых")
-                          //     .toList());
-                        }
+                          if(searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents= true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
+
                       });
                     },
                     child: Image.asset(
@@ -145,19 +149,21 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        if(listEvents
-                            .where((e) => e["category"] == "Кафе и рестораны").toList().length == 0){
-                          searchEvents == 0;
-                        }
-                        else{
+
                           searchEvents = listEvents
                               .where((e) => e["category"] == "Кафе и рестораны")
                               .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Кафе и рестораны")
-                          //     .toList());
-                        }
+                          if(searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
+
                       });
                       // Handle button press
                     },
@@ -174,18 +180,21 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        if(listEvents.where((e) => e["category"] == "Искусство и культура").toList().length == 0){
-                          searchEvents == 0;
-                        }
-                        else{
+
                           searchEvents = listEvents
                               .where((e) => e["category"] == "Искусство и культура")
                               .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Кафе и рестораны")
-                          //     .toList());
-                        }
+                          if(searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
+
                       });
                     },
                     child: Image.asset(
@@ -201,18 +210,37 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        if(listEvents.where((e) => e["category"] == "Отдых на природе").toList().length == 0){
-                          searchEvents == [];
-                        }
-                        else{
+                        if(!myMode) {
                           searchEvents = listEvents
                               .where((e) => e["category"] == "Отдых на природе")
                               .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Отдых на природе")
-                          //     .toList());
+                          if (searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
                         }
+                        else{
+                          searchEvents = myEvents
+                              .where((e) => e["category"] == "Отдых на природе")
+                              .toList();
+                          if (searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
+                        }
+
 
                       });
                     },
@@ -229,19 +257,19 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
+                          searchEvents = listEvents.where((e) => e["category"] == "Ночная жизнь").toList();
 
-                        if(listEvents.where((e) => e["category"] == "Ночная жизнь").toList().length == 0){
-                          searchEvents == [];
+                        if(searchEvents.isNotEmpty) {
+                          setState(() {
+                            thereAreEvents = true;
+                          });
                         }
-                        else{
-                          searchEvents = listEvents
-                              .where((e) => e["category"] == "Ночная жизнь")
-                              .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Ночная жизнь")
-                          //     .toList());
+                        else {
+                          setState(() {
+                            thereAreEvents = false;
+                          });
                         }
+
                       });
                     },
                     child: Image.asset(
@@ -257,19 +285,37 @@ class HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       setState(() {
-
-                        if(listEvents.where((e) => e["category"] == "Путешествия").toList().length == 0){
-                          searchEvents == [];
-                        }
-                        else{
+                        if(!myMode) {
                           searchEvents = listEvents
                               .where((e) => e["category"] == "Путешествия")
                               .toList();
-                          // current_events = sort_events(events_add_page
-                          //     .where(
-                          //         (event) => event.category == "Путешествия")
-                          //     .toList());
+                          if (searchEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
                         }
+                        else{
+                          searchEvents = myEvents
+                              .where((e) => e["category"] == "Путешествия")
+                              .toList();
+                          if (myEvents.isNotEmpty) {
+                            setState(() {
+                              thereAreEvents = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              thereAreEvents = false;
+                            });
+                          }
+                        }
+
 
                       });
                     },
@@ -298,85 +344,106 @@ class HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton(
-                        style: ButtonStyle(
-
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              )),
-                          backgroundColor: MaterialStateProperty.all(
-                              const Color.fromARGB(255, 255, 255, 255)),
-
-                          elevation: MaterialStateProperty.all(8.0),
-                          //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            list_of = "События в городе";
-                            show_url_bttn = false;
-                          });
-                          setState(() {
-                            Event().getEvent().then((value) {
-                              searchEvents.clear();
-                              listEvents = value;
-                              current_events = sort_events(events_add_page);
-                            });
-                          });
-                        },
-                        child: const Text(
-                          "Показать всe",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Color.fromARGB(255, 50, 50, 50),
-                            fontFamily: 'Oswald',
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                        )),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        elevation: MaterialStateProperty.all(8.0),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          list_of = "События в городе";
+                          show_url_bttn = false;
+                        });
+
+                        Event().getEvent().then((value) {
+                          setState(() {
+                            listEvents = value;
+                            current_events = sort_events(events_add_page);
+                            userHasEvents = true;
+                            thereAreEvents = true;
+                            myMode = false;
+                          });
+                          // Очищаем searchEvents только после загрузки новых событий
+                          searchEvents.clear();
+                        });
+                      },
+                      child: const Text(
+                        "Показать все",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 50, 50, 50),
+                          fontFamily: 'Oswald',
+                        ),
+                      ),
+                    ),
+
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton(
-                        style: ButtonStyle(
+                      onPressed: () {
+                        setState(() {
+                          list_of = "Мой календарь"; // Устанавливаем значение переменной list_of
+                        });
 
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              )),
-                          backgroundColor: MaterialStateProperty.all(
-                              const Color.fromARGB(255, 255, 255, 255)),
+                        setState(() {
+                          show_url_bttn = true; // Показываем кнопку show_url_bttn
+                        });
 
-                          elevation: MaterialStateProperty.all(8.0),
-                          //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                        ),
-                        onPressed: () {
-
-                          setState(() {
-                            list_of = "Мой календарь";
-                          });
-
-                          setState(() {
-                            show_url_bttn = true;
-                          });
-
-                          setState(() {
-                            searchEvents = listEvents.where((event) {
-                              dynamic participants = event["participants"];
-                              if (participants is List<dynamic>) {
-                                return participants.any((participant) => participant["id"] == current_user.id);
-                              }
-                              return false;
-                            }).toList();
-                          });
-                        },
-                        child: const Text(
-                          "Мой календарь",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Color.fromARGB(255, 50, 50, 50),
-                            fontFamily: 'Oswald',
+                        setState(() {
+                          // Фильтруем события, в которых участвует текущий пользователь
+                          searchEvents = listEvents.where((event) {
+                            dynamic participants = event["participants"];
+                            if (participants is List<dynamic>) {
+                              return participants.any((participant) => participant["id"] == current_user.id);
+                            }
+                            myEvents = searchEvents;
+                            myMode = true;
+                            return false;
+                          }).toList();
+                          if(searchEvents.isNotEmpty){
+                            setState(() {
+                              userHasEvents = true;
+                            });
+                            //return true;
+                          }
+                          else{
+                            setState(() {
+                              userHasEvents = false;
+                            });
+                         //return false;
+                          }
+                        });
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                        )),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        elevation: MaterialStateProperty.all(8.0),
+                      ),
+                      child: Text(
+                        "Мой календарь",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 50, 50, 50),
+                          fontFamily: 'Oswald',
+                        ),
+                      ),
+                    )
+
                   ],
                 ),
               ],
@@ -543,19 +610,23 @@ class HomeState extends State<Home> {
   }
 
   listEvent() {
-    return SizedBox(
-      height: listEvents.length * 250,
-      child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount:
-              searchEvents.isEmpty ? listEvents.length : searchEvents.length,
-          itemBuilder: (BuildContext context, int index) {
-            var listEvent = searchEvents.isEmpty ? listEvents : searchEvents;
-            return SizedBox(
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: Column(
-                  children: [
-                     ElevatedButton(
+    if ((userHasEvents == true)&&(thereAreEvents == true)) {
+      return SizedBox(
+        height: listEvents.length * 260,
+        child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            itemCount:
+            searchEvents.isEmpty ? listEvents.length : searchEvents.length,
+            itemBuilder: (BuildContext context, int index) {
+              var listEvent = searchEvents.isEmpty ? listEvents : searchEvents;
+              return SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.95,
+                  child: Column(
+                    children: [
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           //fixedSize: Size(MediaQuery.of(context).size.width * 0.95, 170),
@@ -569,7 +640,8 @@ class HomeState extends State<Home> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Event_page(
+                                  builder: (context) =>
+                                      Event_page(
                                         event: listEvent[index],
                                       )));
                           costyl = listEvents;
@@ -580,10 +652,14 @@ class HomeState extends State<Home> {
                         },
                         // key: Key(current_events[index].index.toString()),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.95,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.95,
                           //height: 185,
                           margin: const EdgeInsets.only(top: 10),
-                          padding: const EdgeInsets.only(top: 15, left: 15, bottom: 15),
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 15, bottom: 15),
                           // constraints: BoxConstraints(
                           //   minHeight: 40, //minimum height
                           //   maxHeight: 185,
@@ -603,11 +679,18 @@ class HomeState extends State<Home> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(width: 20),
                                       Text(
-                                        "${DateTime.parse(listEvent[index]["date"]).day}/${DateTime.parse(listEvent[index]["date"]).month}/${DateTime.parse(listEvent[index]["date"]).year.toInt() % 100}",
+                                        "${DateTime
+                                            .parse(listEvent[index]["date"])
+                                            .day}/${DateTime
+                                            .parse(listEvent[index]["date"])
+                                            .month}/${DateTime
+                                            .parse(listEvent[index]["date"])
+                                            .year
+                                            .toInt() % 100}",
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',
@@ -615,11 +698,15 @@ class HomeState extends State<Home> {
                                         ),
                                       ),
                                       Text(
-                                        listEvent[index]["time"].split(':').map((e) => e.padLeft(2, '0')).join(':'),
+                                        listEvent[index]["time"]
+                                            .split(':')
+                                            .map((e) => e.padLeft(2, '0'))
+                                            .join(':'),
                                         style: const TextStyle(
                                           fontSize: 21,
                                           fontFamily: 'Oswald',
-                                          color: Color.fromARGB(255, 248, 231, 174),
+                                          color: Color.fromARGB(
+                                              255, 248, 231, 174),
                                         ),
                                       ),
                                       SizedBox(height: 10),
@@ -628,12 +715,18 @@ class HomeState extends State<Home> {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.03,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.03,
                                 ),
 
                                 SizedBox(
-                                 // width: 30
-                                  width: MediaQuery.of(context).size.width * 0.03,
+                                  // width: 30
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.03,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -643,7 +736,8 @@ class HomeState extends State<Home> {
                                       children: [
                                         ClipOval(
                                           child: Image.network(
-                                            listEvent[index]["event_autor"]["avatarUrl"] ?? "",
+                                            listEvent[index]["event_autor"]["avatarUrl"] ??
+                                                "",
                                             width: 30,
                                             height: 30,
                                             fit: BoxFit.cover,
@@ -651,41 +745,54 @@ class HomeState extends State<Home> {
                                         ),
                                         SizedBox(
                                           //width: 30,
-                                          width: MediaQuery.of(context).size.width * 0.04,
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width * 0.04,
                                         ),
                                         Text(
-                                          listEvent[index]["event_autor"]["username"] + "," + " " + listEvent[index]["event_autor"]["age"].toString(),
+                                          listEvent[index]["event_autor"]["username"] +
+                                              "," + " " +
+                                              listEvent[index]["event_autor"]["age"]
+                                                  .toString(),
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontFamily: 'Oswald',
-                                            color: Color.fromARGB(255, 248, 231, 174),
+                                            color: Color.fromARGB(
+                                                255, 248, 231, 174),
                                           ),
                                         ),
                                       ],
                                     ),
 
                                     Row(
-                                    children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *0.5,
-                                      child: Text(
-                                        listEvent[index]["name"],
-                                        softWrap: true,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: 'Oswald',
-                                          color: Color.fromARGB(
-                                              255, 248, 231, 174),
+                                      children: [
+                                        Container(
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width * 0.5,
+                                          child: Text(
+                                            listEvent[index]["name"],
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Oswald',
+                                              color: Color.fromARGB(
+                                                  255, 248, 231, 174),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    ],
+                                      ],
                                     ),
 
                                     Row(
                                       children: [
                                         Container(
-                                        width: MediaQuery.of(context).size.width *0.5,
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width * 0.5,
                                           child: Text(
                                             listEvent[index]["shortDescription"],
                                             softWrap: true,
@@ -698,7 +805,7 @@ class HomeState extends State<Home> {
                                         )
                                       ],
                                     ),
-                                     Row(
+                                    Row(
                                       children: [
                                         SizedBox(
                                           height: 8,
@@ -706,7 +813,7 @@ class HomeState extends State<Home> {
                                       ],
                                     ),
                                     Container(
-                                      child:  Row(
+                                      child: Row(
                                         children: [
                                           home_pics_builder(context,
                                               listEvent[index]["picURL1"]),
@@ -724,51 +831,56 @@ class HomeState extends State<Home> {
 
                         ),
                       ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Visibility(
-                      visible: show_url_bttn,
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Chat_p(
-                                            event: listEvent[index],
-                                          )));
-                            },
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(8.0),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              )),
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromARGB(255, 251, 194, 235)),
-                              //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
-                            ),
-                            child: const Text("Перейти в чат участников",
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    color: Color.fromARGB(255, 50, 50, 50),
-                                    fontFamily: 'Oswald')),
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    )
-                  ],
-                ));
-          }),
-    );
+                      Visibility(
+                        visible: show_url_bttn,
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Chat_p(
+                                              event: listEvent[index],
+                                            )));
+                              },
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(8.0),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    )),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 251, 194, 235)),
+                                //minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-5,10))
+                              ),
+                              child: const Text("Перейти в чат участников",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Color.fromARGB(255, 50, 50, 50),
+                                      fontFamily: 'Oswald')),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  ));
+            }),
+      );
+    }else {
+      // Если у пользователя нет событий, возвращаем пустой контейнер или другой контент
+      return Container();
+    }
   }
 
   // void openUrlInBrowser(Uri url) async {

@@ -92,11 +92,11 @@ class User_page extends State<User_p> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 30,
-              ),
+              // SizedBox(
+              //   height: 30,
+              // ),
               Image.asset(
-                'assets/bg_img.png',
+                'assets/Vector6.png',
                 // Укажите размер изображения
                 width: MediaQuery.of(context).size.width * 1,
                 //height: MediaQuery.of(context).size.height * 1,

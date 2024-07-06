@@ -88,11 +88,11 @@ class _Chat_page extends State<Chat_p> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 30,
-                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  // ),
                   Image.asset(
-                    'assets/bg_img.png',
+                    'assets/Vector6.png',
                     // Укажите размер изображения
                     width: MediaQuery.of(context).size.width * 1,
                     //height: MediaQuery.of(context).size.height * 1,
@@ -101,7 +101,11 @@ class _Chat_page extends State<Chat_p> {
                 ],
               ),
 
+              SizedBox(
+                height: 15,
+              ),
               ListView.builder(
+                padding: EdgeInsets.only(top: 20.0),
                   itemCount: widget.event["messages"].length,
                   controller: _scrollController,
                   itemBuilder: (BuildContext context, int index) {
