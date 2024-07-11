@@ -306,7 +306,7 @@ class Home_route_state extends State<Home_route> {
                       child: Row(
                         children: [
                           Text(
-                            'Дата     ',
+                            'Дата рождения    ',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.blueGrey,
@@ -464,7 +464,7 @@ class Home_route_state extends State<Home_route> {
                     onPressed: () async {
                       if ((user_name_reg == "") ||
                           (user_password == "") ||
-                          (avatarUrl == null) ||
+                          (avatarUrl == "") ||
                           (user_description == "") ||
                           (user_email == "") ||
                           (check_password == "")) {
@@ -498,10 +498,10 @@ class Home_route_state extends State<Home_route> {
                               );
                             });
                       } else if (((DateTime.now()
-                                      .difference(birth_date)
-                                      .inDays /
-                                  365)
-                              .floor() <
+                          .difference(birth_date)
+                          .inDays /
+                          365)
+                          .floor() <
                           16)) {
                         showDialog(
                             context: context,
@@ -545,14 +545,11 @@ class Home_route_state extends State<Home_route> {
                             user_description,
                             user_email,
                             false);
-                        //print(avatarUrl);
-
                         Navigator.push(
                             context,
-                            new MaterialPageRoute(
-                                builder: (context) => new Home()));
-
-
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: Home()));
                       }
                     },
                     style: ButtonStyle(

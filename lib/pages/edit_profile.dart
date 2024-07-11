@@ -163,21 +163,15 @@ class _Edit_pageState extends State<Edit_page> {
       ),
       backgroundColor: Color.fromARGB(255, 255, 247, 225),
       body: Stack(children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // SizedBox(
-            //   height: 30,
-            // ),
-            Image.asset(
-              'assets/Vector6.png',
-              // Укажите размер изображения
-              width: MediaQuery.of(context).size.width * 1,
-              //height: MediaQuery.of(context).size.height * 1,
-              fit: BoxFit.fill,
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/Vector6.png'),
+              fit: BoxFit.cover, // или другой нужный вам fit
             ),
-          ],
+          ),
         ),
         ListView(
           children: [
@@ -473,14 +467,14 @@ class _Edit_pageState extends State<Edit_page> {
                                 ),
                               );
                             });
-                        await User().updateDatanopass(
-                          current_user.id,
-                          user_name.text,
-                          user_email.text,
-                          user_description,
-                          user_password_edit,
-                          edit_avatar,
-                        );
+                        // await User().updateDatanopass(
+                        //   current_user.id,
+                        //   user_name.text,
+                        //   user_email.text,
+                        //   user_description,
+                        //   user_password_edit,
+                        //   edit_avatar,
+                        // );
                       }
                       else{
                         await User().updateData(
@@ -494,14 +488,14 @@ class _Edit_pageState extends State<Edit_page> {
                       }
 
                     }
-                    await User().updateDatanopass(
-                      current_user.id,
-                      user_name.text,
-                      user_email.text,
-                      user_description,
-                      user_password_edit,
-                      edit_avatar,
-                    );
+                    // await User().updateDatanopass(
+                    //   current_user.id,
+                    //   user_name.text,
+                    //   user_email.text,
+                    //   user_description,
+                    //   user_password_edit,
+                    //   edit_avatar,
+                    // );
 
                     // if ((user_email_edit != "") ||
                     //     (user_email_edit

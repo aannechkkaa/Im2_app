@@ -57,7 +57,7 @@ class Reg_route_state extends State<Reg_route>{
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 244, 244, 244),
+        backgroundColor: Color.fromARGB(255, 24, 244, 244),
         title: Text(
           'Вход',
           style: TextStyle(
@@ -199,14 +199,23 @@ class Reg_route_state extends State<Reg_route>{
               ),
               TextButton(
                 onPressed: () async {
-
-                    await User().login(context, user_email, user_password);
-                    // Navigator.push(
-                    //     context,
-                    //     PageTransition(
-                    //         type: PageTransitionType.rightToLeft,
-                    //         child: Home()));
-
+                  if (findUserByLoginAndPassword(
+                      Users, user_email, user_password) ==
+                      null) {
+                    await User().login(user_email, user_password);
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child: Home()));
+                  } else {
+                    current_user = findUserByLoginAndPassword(
+                        Users, user_email, user_password)!;
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new Home()));
+                  }
                 },
                 child: Text(
                   'Войти',
@@ -240,11 +249,10 @@ class Reg_route_state extends State<Reg_route>{
               ),
               TextButton(
                 onPressed: () {
-
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new Home()));
+                          builder: (context) => new Home_route()));
                 },
                 child: Text(
                   'Зарегестрироваться',

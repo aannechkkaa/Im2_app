@@ -67,23 +67,21 @@ class HomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       //backgroundColor: Colors.green,
       appBar: appBar(),
       backgroundColor: Color.fromARGB(255, 255, 247, 225),
       body: Stack(children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              'assets/Vector6.png',
-              // Укажите размер изображения
-              width: MediaQuery.of(context).size.width * 1,
-              //height: MediaQuery.of(context).size.height * 1,
-              fit: BoxFit.fill,
-            ),
-          ],
+      Container(
+      width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Vector6.png'),
+            fit: BoxFit.cover, // или другой нужный вам fit
+          ),
         ),
+      ),
         ListView(
           children: [
             const SizedBox(
@@ -882,12 +880,4 @@ class HomeState extends State<Home> {
       return Container();
     }
   }
-
-  // void openUrlInBrowser(Uri url) async {
-  //   if (await canLaunchUrl(url)) {
-  //     await launchUrl(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
 }

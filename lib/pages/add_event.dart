@@ -134,19 +134,15 @@ class _add_eventState extends State<add_event> {
             centerTitle: false,
           ),
           body: Stack(children: [
-            ListView(
-              children: [
-                const SizedBox(
-                  height: 30,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/Vector6.png'),
+                  fit: BoxFit.cover, // или другой нужный вам fit
                 ),
-                Image.asset(
-                  'assets/Vector6.png',
-                  // Укажите размер изображения
-                  width: MediaQuery.of(context).size.width * 1,
-                  //height: MediaQuery.of(context).size.height * 1,
-                  fit: BoxFit.fill,
-                ),
-              ],
+              ),
             ),
             ListView(
               children: [
@@ -643,39 +639,7 @@ class _add_eventState extends State<add_event> {
                       SizedBox(
                         height: 25,
                       ),
-                      // Card(
-                      //   color: Color.fromARGB(200, 255, 255, 255),
-                      //   child: TextField(
-                      //     //controller: _controller,
-                      //     // obscureText: true,
-                      //     maxLength: 100,
-                      //     maxLines: 1,
-                      //     decoration:
-                      //         //Padding(padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),),
-                      //         InputDecoration(
-                      //       labelText: 'Вставьте ссылку на чат участников',
-                      //       labelStyle: TextStyle(
-                      //           fontSize: 17,
-                      //           color: Colors.blueGrey,
-                      //           fontFamily: 'Oswald'),
-                      //       contentPadding:
-                      //           EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                      //     ),
-                      //     onChanged: (String url) {
-                      //       event_chat_url = url.trim();
-                      //     },
-                      //   ),
-                      // ),
-                      // WebView(
-                      //   initialUrl: 'https://flutter.dev',
-                      //   navigationDelegate: (NavigationRequest request){
-                      //     if(request.url.startsWith('https://flutter.dev')){
-                      //       return NavigationDecision.navigate;
-                      //     }
-                      //     _launchURL(request.url);
-                      //     return NavigationDecision.prevent;
-                      //   },
-                      // ),
+
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

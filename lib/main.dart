@@ -7,18 +7,26 @@ import 'package:im2/pages/Chats.dart';
 import 'package:im2/pages/Event.dart';
 import 'package:im2/pages/account.dart';
 import 'package:provider/provider.dart';
-
 import 'package:im2/pages/Users.dart';
-
 import 'firebase_options.dart';
 
 List<User> users = [];
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Переопределяем debugPrint для фильтрации конкретного сообщения об переполнении
+  debugPrint = (String? message, {int? wrapWidth}) {
+    if (message != null && message.contains('A RenderFlex overflowed by')) {
+      return; // Подавляем это конкретное сообщение об переполнении
+    }
+    // Выводим остальные сообщения как обычно
+    print(message);
+  };
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => User(),
@@ -46,9 +54,12 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark, // Темная тема
         primaryColor: Color.fromARGB(255, 50, 50, 50),
-        // Настройка других параметров для темной темы
+        // Дополнительные настройки для темной темы
       ),
       themeMode: ThemeMode.dark, // Автоматический выбор темы в зависимости от настроек системы
     );
   }
 }
+
+
+
